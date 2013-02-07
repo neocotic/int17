@@ -1,0 +1,43 @@
+{
+    "name": "int17"
+  , "description": "Internationalization JavaScript library"
+  , "version": "0.0.1"
+  , "homepage": "http://neocotic.com/int17"
+  , "bugs": {
+      "url": "https://github.com/neocotic/int17/issues"
+    }
+  , "author": {
+        "name": "Alasdair Mercer"
+      , "email": "mercer.alasdair@gmail.com"
+      , "url": "http://neocotic.com"
+    }
+  , "licenses": [
+      {
+          "type": "MIT"
+        , "url": "https://github.com/neocotic/int17/raw/master/LICENSE.md"
+      }
+    ]
+  , "keywords": [
+        "i18n"
+      , "internationalization"
+      , "internationalize"
+      , "localization"
+      , "localize"
+      , "globalization"
+      , "globalize"
+    ]
+  , "repository": {
+        "type": "git"
+      , "url": "git://github.com/neocotic/int17.git"
+    }
+  , "devDependencies": {
+      "grunt": "~0.3.17"
+    }
+  , "engines": {
+      "node": ">= 0.6.0"
+    }
+  , "scripts": {
+      "test": "grunt test"
+    }
+  , "main": "lib/int17"
+}
