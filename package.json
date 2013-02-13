@@ -31,10 +31,8 @@
       , "url": "git://github.com/neocotic/int17.git"
     }
   , "devDependencies": {
-      "grunt": "~0.3.17"
-    }
-  , "engines": {
-      "node": ">= 0.6.0"
+        "grunt": "~0.3.17"
+      , "grunt-docco": "~0.1.2"
     }
   , "scripts": {
       "test": "grunt test"
