@@ -39,10 +39,14 @@ module.exports = function(grunt) {
         all: ['test/browser/**/*.html']
       }
     , uglify:   {
-          all:     '<%= jshint.all %>'
+          all:     {
+            files: {
+              'dist/<%= pkg.name %>.min.js': ['lib/<%= pkg.name %>.js']
+            }
+          }
         , options: {
             banner: '/*! <%= pkg.name %> v<%= pkg.version %> | (c) ' +
-            '<%= grunt.template.today("yyyy") %> <%= pkg.author.name %> */'
+              '<%= grunt.template.today("yyyy") %> <%= pkg.author.name %> */'
           }
       }
     , watch:    {

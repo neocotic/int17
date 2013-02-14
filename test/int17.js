@@ -45,9 +45,22 @@ exports.testCreate = function(test) {
 exports.languages = {
     testAsync: function(test) {
       var inst  = int17.create()
-        , langs = ['en', 'en-GB', 'en-US', 'fr-FR'];
+        , langs = ['en', 'en-GB', 'en-US', 'fr-BE'];
       test.expect(3);
-      inst.init({ path: './test/fixtures/locales2' }, function (err) {
+      inst.init({ path: './test/fixtures/locales1' }, function (err) {
+        test.ifError(err);
+        inst.languages(function (err, languages) {
+          test.ifError(err);
+          test.deepEqual(languages, langs, 'Not all languages were detected');
+          test.done();
+        });
+      });
+    }
+  , testAsyncFolders: function(test) {
+      var inst  = int17.create()
+        , langs = ['de', 'de-AT', 'de-CH', 'pt-BR'];
+      test.expect(3);
+      inst.init({ folders: true, locale: 'de', path: './test/fixtures/locales2' }, function (err) {
         test.ifError(err);
         inst.languages(function (err, languages) {
           test.ifError(err);
@@ -60,7 +73,25 @@ exports.languages = {
       var inst  = int17.create()
         , langs = ['ar-EG', 'zh-CN'];
       test.expect(3);
-      inst.init({ languages: langs, path: './test/fixtures/locales2' }, function (err) {
+      inst.init({ languages: langs, path: './test/fixtures/locales1' }, function (err) {
+        test.ifError(err);
+        inst.languages(function (err, languages) {
+          test.ifError(err);
+          test.deepEqual(languages, langs, 'Configured languages should have been used');
+          test.done();
+        });
+      });
+    }
+  , testAsyncManualFolders: function(test) {
+      var inst  = int17.create()
+        , langs = ['ar-EG', 'zh-CN'];
+      test.expect(3);
+      inst.init({
+          folders:   true
+        , languages: langs
+        , locale:    'de'
+        , path:      './test/fixtures/locales2'
+      }, function (err) {
         test.ifError(err);
         inst.languages(function (err, languages) {
           test.ifError(err);
@@ -72,35 +103,94 @@ exports.languages = {
   , testAsyncParent: function(test) {
       var inst  = int17.create()
         , langs = ['en-GB', 'en-US'];
-      test.expect(3);
-      inst.init({ path: './test/fixtures/locales2' }, function (err) {
+      test.expect(7);
+      inst.init({ path: './test/fixtures/locales1' }, function (err) {
         test.ifError(err);
         inst.languages('en', function (err, languages) {
           test.ifError(err);
-          test.deepEqual(languages, langs, 'Extended locales should be retrieved');
-          test.done();
+          test.deepEqual(languages, langs, 'Extended languages should be retrieved');
+          inst.languages('en-GB', function (err, languages) {
+            test.ifError(err);
+            test.deepEqual(languages, [], 'No languages should be retrieved');
+            inst.languages('de', function (err, languages) {
+              test.ifError(err);
+              test.deepEqual(languages, [], 'No languages should be retrieved');
+              test.done();
+            });
+          });
+        });
+      });
+    }
+  , testAsyncParentFolders: function(test) {
+      var inst  = int17.create()
+        , langs = ['de-AT', 'de-CH'];
+      test.expect(7);
+      inst.init({ folders: true, locale: 'de', path: './test/fixtures/locales2' }, function (err) {
+        test.ifError(err);
+        inst.languages('de', function (err, languages) {
+          test.ifError(err);
+          test.deepEqual(languages, langs, 'Extended languages should be retrieved');
+          inst.languages('de-AT', function (err, languages) {
+            test.ifError(err);
+            test.deepEqual(languages, [], 'No languages should be retrieved');
+            inst.languages('en', function (err, languages) {
+              test.ifError(err);
+              test.deepEqual(languages, [], 'No languages should be retrieved');
+              test.done();
+            });
+          });
         });
       });
     }
   , testSync: function(test) {
       var inst  = int17.create()
-        , langs = ['en', 'en-GB', 'en-US', 'fr-FR'];
-      inst.initSync({ path: './test/fixtures/locales2' });
+        , langs = ['en', 'en-GB', 'en-US', 'fr-BE'];
+      inst.initSync({ path: './test/fixtures/locales1' });
+      test.deepEqual(inst.languagesSync(), langs, 'Not all languages were detected');
+      test.done();
+    }
+  , testSyncFolders: function(test) {
+      var inst  = int17.create()
+        , langs = ['de', 'de-AT', 'de-CH', 'pt-BR'];
+      inst.initSync({ folders: true, locale: 'de', path: './test/fixtures/locales2' });
       test.deepEqual(inst.languagesSync(), langs, 'Not all languages were detected');
       test.done();
     }
   , testSyncManual: function(test) {
       var inst  = int17.create()
         , langs = ['ar-EG', 'zh-CN'];
-      inst.initSync({ languages: langs, path: './test/fixtures/locales2' });
+      inst.initSync({ languages: langs, path: './test/fixtures/locales1' });
+      test.deepEqual(inst.languagesSync(), langs, 'Configured languages should have been used');
+      test.done();
+    }
+  , testSyncManualFolders: function(test) {
+      var inst  = int17.create()
+        , langs = ['ar-EG', 'zh-CN'];
+      inst.initSync({
+          folders:   true
+        , languages: langs
+        , locale:    'de'
+        , path:      './test/fixtures/locales2'
+      });
       test.deepEqual(inst.languagesSync(), langs, 'Configured languages should have been used');
       test.done();
     }
   , testSyncParent: function(test) {
       var inst  = int17.create()
         , langs = ['en-GB', 'en-US'];
-      inst.initSync({ path: './test/fixtures/locales2' });
-      test.deepEqual(inst.languagesSync('en'), langs, 'Extended locales should be retrieved');
+      inst.initSync({ path: './test/fixtures/locales1' });
+      test.deepEqual(inst.languagesSync('en'), langs, 'Extended languages should be retrieved');
+      test.deepEqual(inst.languagesSync('en-GB'), [], 'No languages should be retrieved');
+      test.deepEqual(inst.languagesSync('de'), [], 'No languages should be retrieved');
+      test.done();
+    }
+  , testSyncParentFolders: function(test) {
+      var inst  = int17.create()
+        , langs = ['de-AT', 'de-CH'];
+      inst.initSync({ folders: true, locale: 'de', path: './test/fixtures/locales2' });
+      test.deepEqual(inst.languagesSync('de'), langs, 'Extended languages should be retrieved');
+      test.deepEqual(inst.languagesSync('de-AT'), [], 'No languages should be retrieved');
+      test.deepEqual(inst.languagesSync('en'), [], 'No languages should be retrieved');
       test.done();
     }
 };
