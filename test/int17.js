@@ -2,9 +2,11 @@
 
 var int17 = require('../lib/int17.js');
 
-function equalOnly(test, index, expected, array, message) {
+function equalOnly(test, index, expected, array, message, strict) {
   message = message ? message + ': ' : '';
-  var i, isExpected, j;
+  var i, isExpected, j
+    , equalMethod    = strict ? 'strictEqual' : 'equal'
+    , notEqualMethod = strict ? 'notStrictEqual' : 'notEqual';
   for (i = 0; i < array.length; i++) {
     isExpected = index === i;
     if (!isExpected) {
@@ -16,13 +18,17 @@ function equalOnly(test, index, expected, array, message) {
       }
     }
     if (isExpected) {
-      test.equal(array[i], array[index], message + 'item[' + i + '] should equal item[' + index +
-        ']');
-    } else {
-      test.notEqual(array[i], array[index], message + 'item[' + i + '] should not equal item[' +
+      test[equalMethod](array[i], array[index], message + 'item[' + i + '] should equal item[' +
         index + ']');
+    } else {
+      test[notEqualMethod](array[i], array[index], message + 'item[' + i +
+        '] should not equal item[' + index + ']');
     }
   }
+}
+
+function strictEqualOnly(test, index, expected, array, message) {
+  equalOnly(test, index, expected, array, message, true);
 }
 
 exports.testCreate = function(test) {
@@ -33,12 +39,33 @@ exports.testCreate = function(test) {
     , int17.create('foo')
     , int17.create()
   ];
-  equalOnly(test, 0, [],  instances, 'Non-cached instance was not unique');
-  equalOnly(test, 1, [3], instances, 'Cached instance was unique');
-  equalOnly(test, 2, [],  instances, 'Cached instance was not unique');
-  equalOnly(test, 4, [],  instances, 'Non-cached instance was not unique');
+  strictEqualOnly(test, 0, [],  instances, 'Non-cached instance was not unique');
+  strictEqualOnly(test, 1, [3], instances, 'Cached instance was unique');
+  strictEqualOnly(test, 2, [],  instances, 'Cached instance was not unique');
+  strictEqualOnly(test, 4, [],  instances, 'Non-cached instance was not unique');
   int17.clearCache();
   test.notEqual(int17.create('foo'), instances[1], 'Cache was not cleared');
+  test.done();
+};
+
+exports.testExpress = function(test) {
+  var app  = {}
+    , inst = int17.create();
+  test.expect(4);
+  app.dynamicHelpers = function(helpers) {
+    test.ok(helpers, 'Helpers should be provided');
+    test.strictEqual(helpers.int17, inst, 'Helpers should contain reference to instance');
+  };
+  app.use = function(fn) {
+    var req = {}
+      , res = { locals: {} };
+    fn(req, res, function () {
+      test.strictEqual(req.int17, inst, 'Request should contain reference to instance');
+      test.strictEqual(res.locals.int17, inst,
+        'Response local variables should contain reference to instance');
+    });
+  };
+  inst.express(app);
   test.done();
 };
 
