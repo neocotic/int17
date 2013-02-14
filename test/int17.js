@@ -42,11 +42,10 @@ exports.testCreate = function(test) {
   test.done();
 };
 
-// TODO: Test parent filtering
 exports.languages = {
     testAsync: function(test) {
       var inst  = int17.create()
-        , langs = ['en', 'en-GB', 'fr-FR'];
+        , langs = ['en', 'en-GB', 'en-US', 'fr-FR'];
       test.expect(3);
       inst.init({ path: './test/fixtures/locales2' }, function (err) {
         test.ifError(err);
@@ -59,7 +58,7 @@ exports.languages = {
     }
   , testAsyncManual: function(test) {
       var inst  = int17.create()
-        , langs = ['en-US', 'fr-BE'];
+        , langs = ['ar-EG', 'zh-CN'];
       test.expect(3);
       inst.init({ languages: langs, path: './test/fixtures/locales2' }, function (err) {
         test.ifError(err);
@@ -70,18 +69,38 @@ exports.languages = {
         });
       });
     }
+  , testAsyncParent: function(test) {
+      var inst  = int17.create()
+        , langs = ['en-GB', 'en-US'];
+      test.expect(3);
+      inst.init({ path: './test/fixtures/locales2' }, function (err) {
+        test.ifError(err);
+        inst.languages('en', function (err, languages) {
+          test.ifError(err);
+          test.deepEqual(languages, langs, 'Extended locales should be retrieved');
+          test.done();
+        });
+      });
+    }
   , testSync: function(test) {
       var inst  = int17.create()
-        , langs = ['en', 'en-GB', 'fr-FR'];
+        , langs = ['en', 'en-GB', 'en-US', 'fr-FR'];
       inst.initSync({ path: './test/fixtures/locales2' });
       test.deepEqual(inst.languagesSync(), langs, 'Not all languages were detected');
       test.done();
     }
   , testSyncManual: function(test) {
       var inst  = int17.create()
-        , langs = ['en-US', 'fr-BE'];
+        , langs = ['ar-EG', 'zh-CN'];
       inst.initSync({ languages: langs, path: './test/fixtures/locales2' });
       test.deepEqual(inst.languagesSync(), langs, 'Configured languages should have been used');
+      test.done();
+    }
+  , testSyncParent: function(test) {
+      var inst  = int17.create()
+        , langs = ['en-GB', 'en-US'];
+      inst.initSync({ path: './test/fixtures/locales2' });
+      test.deepEqual(inst.languagesSync('en'), langs, 'Extended locales should be retrieved');
       test.done();
     }
 };
