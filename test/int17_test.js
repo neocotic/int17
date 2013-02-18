@@ -1,38 +1,7 @@
 'use strict';
 
-var int17 = require('../lib/int17.js');
-
-// Helper functions
-// ----------------
-
-function equalOnly(test, index, expected, array, message, strict) {
-  message = message ? message + ': ' : '';
-  var i, isExpected, j
-    , equalMethod    = strict ? 'strictEqual' : 'equal'
-    , notEqualMethod = strict ? 'notStrictEqual' : 'notEqual';
-  for (i = 0; i < array.length; i++) {
-    isExpected = index === i;
-    if (!isExpected) {
-      for (j = 0; j < expected.length; j++) {
-        if (expected[j] === i) {
-          isExpected = true;
-          break;
-        }
-      }
-    }
-    if (isExpected) {
-      test[equalMethod](array[i], array[index], message + 'item[' + i + '] should equal item[' +
-        index + ']');
-    } else {
-      test[notEqualMethod](array[i], array[index], message + 'item[' + i +
-        '] should not equal item[' + index + ']');
-    }
-  }
-}
-
-function strictEqualOnly(test, index, expected, array, message) {
-  equalOnly(test, index, expected, array, message, true);
-}
+var helpers = require('./helpers')
+  , int17   = require('../lib/int17');
 
 // Test cases
 // ----------
@@ -45,10 +14,10 @@ exports.testCreate = function(test) {
     , int17.create('foo')
     , int17.create()
   ];
-  strictEqualOnly(test, 0, [],  instances, 'Non-cached instance was not unique');
-  strictEqualOnly(test, 1, [3], instances, 'Cached instance was unique');
-  strictEqualOnly(test, 2, [],  instances, 'Cached instance was not unique');
-  strictEqualOnly(test, 4, [],  instances, 'Non-cached instance was not unique');
+  helpers.strictEqualOnly(test, 0, [],  instances, 'Non-cached instance was not unique');
+  helpers.strictEqualOnly(test, 1, [3], instances, 'Cached instance was unique');
+  helpers.strictEqualOnly(test, 2, [],  instances, 'Cached instance was not unique');
+  helpers.strictEqualOnly(test, 4, [],  instances, 'Non-cached instance was not unique');
   int17.clearCache();
   test.notStrictEqual(int17.create('foo'), instances[1], 'Cache was not cleared');
   test.done();
