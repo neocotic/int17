@@ -20,7 +20,7 @@ module.exports = function(grunt) {
           }
       }
     , nodeunit: {
-        all: ['test/**/*.js', '!test/browser/**/*.js']
+        all: ['test/**/*_test.js', '!test/browser/**/*']
       }
     , qunit:    {
         all: ['test/browser/**/*.html']
