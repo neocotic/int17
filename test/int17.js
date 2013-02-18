@@ -2,6 +2,9 @@
 
 var int17 = require('../lib/int17.js');
 
+// Helper functions
+// ----------------
+
 function equalOnly(test, index, expected, array, message, strict) {
   message = message ? message + ': ' : '';
   var i, isExpected, j
@@ -31,6 +34,9 @@ function strictEqualOnly(test, index, expected, array, message) {
   equalOnly(test, index, expected, array, message, true);
 }
 
+// Test cases
+// ----------
+
 exports.testCreate = function(test) {
   var instances = [
       int17.create()
@@ -44,7 +50,7 @@ exports.testCreate = function(test) {
   strictEqualOnly(test, 2, [],  instances, 'Cached instance was not unique');
   strictEqualOnly(test, 4, [],  instances, 'Non-cached instance was not unique');
   int17.clearCache();
-  test.notEqual(int17.create('foo'), instances[1], 'Cache was not cleared');
+  test.notStrictEqual(int17.create('foo'), instances[1], 'Cache was not cleared');
   test.done();
 };
 

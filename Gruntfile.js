@@ -11,29 +11,16 @@ module.exports = function(grunt) {
         }
       }
     , jshint:   {
-          all:      ['Gruntfile.js', 'lib/**/*.js', 'test/**/*.js']
-        , options:  {
-              boss:      true
-            , browser:   true
-            , camelcase: true
-            , curly:     false
-            , eqeqeq:    true
-            , immed:     true
-            , latedef:   true
-            , laxcomma:  true
-            , maxlen:    100
-            , newcap:    true
-            , noarg:     true
-            , node:      true
-            , nonew:     true
-            , quotmark:  'single'
-            , strict:    true
-            , undef:     true
-            , unused:    true
+          all:     [
+              'Gruntfile.js'
+            , 'lib/**/*.js'
+          ]
+        , options: {
+            jshintrc: '.jshintrc'
           }
       }
     , nodeunit: {
-        all: ['test/**/*.js', '!test/browser/*']
+        all: ['test/**/*.js', '!test/browser/**/*.js']
       }
     , qunit:    {
         all: ['test/browser/**/*.html']
@@ -62,9 +49,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-docco');
 
-  grunt.registerTask('browser', ['qunit']);
   grunt.registerTask('build',   ['docco',  'uglify']);
   grunt.registerTask('default', ['test',   'build']);
-  grunt.registerTask('test',    ['jshint', 'nodeunit']);
+  grunt.registerTask('test',    ['jshint', 'nodeunit', 'qunit']);
 
 };
