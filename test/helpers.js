@@ -63,10 +63,13 @@
   Helpers.prototype.htmlEqual = function(test, selector, expected, message) {
     message = message ? message + ': ' : '';
     selector = '#int17 ' + (selector || '');
-    var div     = document.createElement('div')
-      , element = document.querySelector(selector);
-    div.appendChild(element);
-    test.equal(div.innerHTML, expected, message + 'HTML not as expected');
+    var div, i
+      , elements = document.querySelectorAll(selector);
+    for (i = 0; i < elements.length; i++) {
+      div = document.createElement('div');
+      div.appendChild(elements[i]);
+      test.equal(div.innerHTML, expected, message + 'element[' + i + ']\'s HTML not as expected');
+    }
   };
 
   // Expose an instance of `Helpers` for node.js or the browser.

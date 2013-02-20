@@ -1,5 +1,16 @@
 'use strict';
 
+test('attribute', function (test) {
+  var inst = int17.create();
+  inst.initSync({ locale: 'en', path: '../fixtures/locales1' });
+  inst.attribute('#int17 .test3 .e2', 'title', 'test1');
+  helpers.htmlEqual(test, '.test3 .e2', '<a class="e2" title="test1m"></a>');
+  inst.attribute('#int17 .test3 .e2', 'title', 'test2');
+  helpers.htmlEqual(test, '.test3 .e2', '<a class="e2" title="test2m $1 $1 $2"></a>');
+  inst.attribute('#int17 .test3 .e2', 'title', 'test2', 'a1', 'a2');
+  helpers.htmlEqual(test, '.test3 .e2', '<a class="e2" title="test2m a1 a1 a2"></a>');
+});
+
 test('create', function (test) {
   var instances = [
       int17.create()
@@ -246,23 +257,27 @@ test('languages:sync:parent:folders', function (test) {
 });
 
 test('traverse', function (test) {
+  // TODO: Wrap long lines
   var inst = int17.create();
   inst.initSync({ locale: 'en', path: '../fixtures/locales1' });
-  inst.traverse();
+  inst.traverse('#int17 .test1');
   helpers.htmlEqual(test, '.test1 .e1', '<a class="e1" int17-content="test1">test1m</a>');
-  helpers.htmlEqual(test, '.test1 .e2', '<a class="e2" int17-args="a1;a2" int17-content="test2">test2m a1 a1 a2</a>');
-  helpers.htmlEqual(test, '.test1 .e3', '<a class="e3" int17-args="a1;a2" int17-values="title:test2;.style.direction:dir;.innerHTML:test4" title="test2m a1 a1 a2" style="direction: ltr; "><span int17-content="test1">test1m</span></a>');
-  helpers.htmlEqual(test, '.test1 .e4', '<select class="e4" int17-options="testOpt1:-1;testOpt2;testOpt3"><option value="-1">option1</option><option>option2</option><option>option3</option></select>');
+  helpers.htmlEqual(test, '.test1 .e2', '<a class="e2" int17-content="test2">test2m $1 $1 $2</a>');
+  helpers.htmlEqual(test, '.test1 .e3', '<a class="e3" int17-args="a1;a2" int17-content="test2">test2m a1 a1 a2</a>');
+  helpers.htmlEqual(test, '.test1 .e4', '<a class="e4" int17-args="a1;a2" int17-values="title:test2;.style.direction:dir;.innerHTML:test4" title="test2m a1 a1 a2" style="direction: ltr; "><span int17-content="test1">test1m</span></a>');
+  helpers.htmlEqual(test, '.test1 .e5', '<select class="e5" int17-options="testOpt1:-1;testOpt2;testOpt3"><option value="-1">option1</option><option>option2</option><option>option3</option></select>');
 });
 
 test('traverse:clean', function (test) {
+  // TODO: Wrap long lines
   var inst = int17.create();
   inst.initSync({ clean: true, locale: 'en', path: '../fixtures/locales1' });
-  inst.traverse();
+  inst.traverse(document.querySelector('#int17 .test2'));
   helpers.htmlEqual(test, '.test2 .e1', '<a class="e1">test1m</a>');
-  helpers.htmlEqual(test, '.test2 .e2', '<a class="e2">test2m a1 a1 a2</a>');
-  helpers.htmlEqual(test, '.test2 .e3', '<a class="e3" title="test2m a1 a1 a2" style="direction: ltr; "><span>test1m</span></a>');
-  helpers.htmlEqual(test, '.test2 .e4', '<select class="e4"><option value="-1">option1</option><option>option2</option><option>option3</option></select>');
+  helpers.htmlEqual(test, '.test2 .e2', '<a class="e2">test2m $1 $1 $2</a>');
+  helpers.htmlEqual(test, '.test2 .e3', '<a class="e3">test2m a1 a1 a2</a>');
+  helpers.htmlEqual(test, '.test2 .e4', '<a class="e4" title="test2m a1 a1 a2" style="direction: ltr; "><span>test1m</span></a>');
+  helpers.htmlEqual(test, '.test2 .e5', '<select class="e5"><option value="-1">option1</option><option>option2</option><option>option3</option></select>');
 });
 
 // TODO: Complete test cases
