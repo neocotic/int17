@@ -3,9 +3,6 @@
 var helpers = require('./helpers')
   , int17   = require('../lib/int17');
 
-// Test cases
-// ----------
-
 exports.testAll = function(test) {
   var inst = int17.create();
   inst.initSync({ path: './test/fixtures/locales1' });
@@ -342,5 +339,3 @@ exports.languages = {
       test.done();
     }
 };
-
-// TODO: Complete test cases

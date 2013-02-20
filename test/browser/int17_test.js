@@ -1,8 +1,5 @@
 'use strict';
 
-// Test cases
-// ----------
-
 test('create', function () {
   var instances = [
       int17.create()
