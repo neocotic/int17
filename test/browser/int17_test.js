@@ -16,10 +16,11 @@ test('create', function (test) {
   test.notStrictEqual(int17.create('foo'), instances[1], 'Cache was not cleared');
 });
 
-asyncTest('init:async', 11, function (test) {
+asyncTest('init:async', 12, function (test) {
   var inst = int17.create()
     , opts = {
-          encoding:  'UTF-8'
+          clean:     true
+        , encoding:  'UTF-8'
         , extension: '.js'
         , fallback:  false
         , fileName:  'msgs'
@@ -40,7 +41,8 @@ asyncTest('init:async', 11, function (test) {
 test('init:sync', function (test) {
   var inst = int17.create()
     , opts = {
-          encoding:  'UTF-8'
+          clean:     true
+        , encoding:  'UTF-8'
         , extension: '.js'
         , fallback:  false
         , fileName:  'msgs'

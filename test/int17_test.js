@@ -149,7 +149,8 @@ exports.init = {
     testAsync: function(test) {
       var inst = int17.create()
         , opts = {
-              encoding:  'UTF-8'
+              clean:     true
+            , encoding:  'UTF-8'
             , extension: '.js'
             , fallback:  false
             , fileName:  'msgs'
@@ -159,7 +160,7 @@ exports.init = {
             , path:      './test/fixtures/locales3'
             , validate:  false
           };
-      test.expect(11);
+      test.expect(12);
       inst.init(opts, function (err, messages) {
         test.ifError(err);
         test.ok(messages, 'No messages were loaded');
@@ -170,7 +171,8 @@ exports.init = {
   , testSync: function(test) {
       var inst = int17.create()
         , opts = {
-              encoding:  'UTF-8'
+              clean:     true
+            , encoding:  'UTF-8'
             , extension: '.js'
             , fallback:  false
             , fileName:  'msgs'
