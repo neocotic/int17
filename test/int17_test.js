@@ -6,6 +6,45 @@ var helpers = require('./helpers')
 // Test cases
 // ----------
 
+exports.testAll = function(test) {
+  var inst = int17.create();
+  inst.initSync({ path: './test/fixtures/locales1' });
+  test.deepEqual(inst.all([
+      'test1'
+    , 'test2'
+    , 'test3'
+  ]), [
+      'test1m'
+    , 'test2m $1 $1 $2'
+    , 'test3m $1 $1 $2 p1c p2c $1 p3c'
+  ]);
+  test.deepEqual(inst.all([
+      'test1'
+    , 'test2'
+    , { name: 'test3' }
+    , { name: 'test3', args: [] }
+    , { name: 'test3', args: ['a1b', 'a2b'] }
+  ], 'a1', 'a2'), [
+      'test1m'
+    , 'test2m a1 a1 a2'
+    , 'test3m a1 a1 a2 p1c p2c a1 p3c'
+    , 'test3m $1 $1 $2 p1c p2c $1 p3c'
+    , 'test3m a1b a1b a2b p1c p2c a1b p3c'
+  ]);
+  test.deepEqual(inst.all([
+      'test1'
+    , 'test2'
+    , 'test3'
+    , { name: 'test3', args: ['a1', 'a2'] }
+  ]), [
+      'test1m'
+    , 'test2m $1 $1 $2'
+    , 'test3m $1 $1 $2 p1c p2c $1 p3c'
+    , 'test3m a1 a1 a2 p1c p2c a1 p3c'
+  ]);
+  test.done();
+};
+
 exports.testCreate = function(test) {
   var instances = [
       int17.create()
@@ -42,6 +81,113 @@ exports.testExpress = function(test) {
   };
   inst.express(app);
   test.done();
+};
+
+exports.testGet = function(test) {
+  var inst = int17.create();
+  inst.initSync({ path: './test/fixtures/locales1' });
+  test.equal(inst.get('test1'), 'test1m');
+  test.equal(inst.get('test2'), 'test2m $1 $1 $2');
+  test.equal(inst.get('test2', 'a1', 'a2'), 'test2m a1 a1 a2');
+  test.equal(inst.get('test3'), 'test3m $1 $1 $2 p1c p2c $1 p3c');
+  test.equal(inst.get('test3', 'a1', 'a2'), 'test3m a1 a1 a2 p1c p2c a1 p3c');
+  test.done();
+};
+
+exports.testLocale = function(test) {
+  var i
+    , inst    = int17.create()
+    , locales = ['en', 'en-GB'];
+  for (i = 0; i < locales.length; i++) {
+    inst.initSync({ locale: locales[i], path: './test/fixtures/locales1' });
+    test.equal(inst.locale(), locales[i], 'Locale not as expected');
+  }
+  test.done();
+};
+
+exports.testMap = function(test) {
+  var inst = int17.create();
+  inst.initSync({ path: './test/fixtures/locales1' });
+  test.deepEqual(inst.map([
+      'test1'
+    , 'test2'
+    , 'test3'
+  ]), {
+      test1: 'test1m'
+    , test2: 'test2m $1 $1 $2'
+    , test3: 'test3m $1 $1 $2 p1c p2c $1 p3c'
+  });
+  test.deepEqual(inst.map([
+      'test1'
+    , 'test2'
+    , { name: 'test3' }
+    , { name: 'test3', args: [] }
+    , { name: 'test3', args: ['a1b', 'a2b'] }
+  ], 'a1', 'a2'), {
+      test1: 'test1m'
+    , test2: 'test2m a1 a1 a2'
+    , test3: 'test3m a1b a1b a2b p1c p2c a1b p3c'
+  });
+  test.deepEqual(inst.map([
+      { name: 'test3', args: [] }
+    , { name: 'test3' }
+  ], 'a1', 'a2'), {
+    test3: 'test3m a1 a1 a2 p1c p2c a1 p3c'
+  });
+  test.deepEqual(inst.map([
+      { name: 'test3' }
+    , { name: 'test3', args: [] }
+  ], 'a1', 'a2'), {
+    test3: 'test3m $1 $1 $2 p1c p2c $1 p3c'
+  });
+  test.deepEqual(inst.map([
+    { name: 'test3', args: ['a1', 'a2'] }
+  ]), {
+    test3: 'test3m a1 a1 a2 p1c p2c a1 p3c'
+  });
+  test.done();
+};
+
+exports.init = {
+    testAsync: function(test) {
+      var inst = int17.create()
+        , opts = {
+              encoding:  'UTF-8'
+            , extension: '.js'
+            , fallback:  false
+            , fileName:  'msgs'
+            , folders:   true
+            , locale:    ['fr', 'BE']
+            , optimize:  false
+            , path:      './test/fixtures/locales3'
+            , validate:  false
+          };
+      test.expect(11);
+      inst.init(opts, function (err, messages) {
+        test.ifError(err);
+        test.ok(messages, 'No messages were loaded');
+        helpers.strictContains(test, inst.messenger, opts, 'Options were not set correctly');
+        test.done();
+      });
+    }
+  , testSync: function(test) {
+      var inst = int17.create()
+        , opts = {
+              encoding:  'UTF-8'
+            , extension: '.js'
+            , fallback:  false
+            , fileName:  'msgs'
+            , folders:   true
+            , locale:    ['fr', 'BE']
+            , optimize:  false
+            , path:      './test/fixtures/locales3'
+            , validate:  false
+          };
+      inst.initSync(opts);
+      test.ok(inst.messenger.messages, 'No messages were loaded');
+      helpers.strictContains(test, inst.messenger, opts, 'Options were not set correctly');
+      test.done();
+    }
 };
 
 exports.languages = {

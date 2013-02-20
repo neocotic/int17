@@ -1,0 +1,5 @@
+{
+  "locale": {
+    "message": "fr-BE"
+  }
+}

@@ -5,6 +5,25 @@
   // Creates a new instance of `Helpers`.
   function Helpers() {}
 
+  // Test that `actual` contains all the same properties of `expected` - with equal values, while
+  // it may also contain more.
+  Helpers.prototype.contains = function(ctx, actual, expected, message, strict) {
+    message = message ? message + ': ' : '';
+    var prop
+      , equalMethod = strict ? 'strictEqual' : 'equal';
+    for (prop in expected) {
+      if (!expected.hasOwnProperty(prop)) continue;
+      ctx[equalMethod](actual[prop], expected[prop], message + 'property[' + prop +
+        '] was not as expected');
+    }
+  };
+
+  // Test that `actual` contains all the same properties of `expected` - with *strictly* equal
+  // values, while it may also contain more.
+  Helpers.prototype.strictContains = function(ctx, actual, expected, message, strict) {
+    this.contains(ctx, actual, expected, message, true);
+  };
+
   // Test that the item at `index` within `array` is only equal to those within the `expected`
   // indices.
   Helpers.prototype.equalOnly = function(ctx, index, expected, array, message, strict) {

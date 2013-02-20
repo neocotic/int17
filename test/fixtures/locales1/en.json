@@ -1,5 +1,25 @@
 {
   "locale": {
     "message": "en"
+  },
+  "test1": {
+    "message": "test1m"
+  },
+  "test2": {
+    "message": "test2m $1 $1 $2"
+  },
+  "test3": {
+    "message": "test3m $1 $1 $2 $placeholder1$ $PLACEHOLDER2$ $placeHOLDER3$",
+    "placeholders": {
+      "placeholder1": {
+        "content": "p1c"
+      },
+      "placeholder2": {
+        "content": "p2c $1"
+      },
+      "placeholder3": {
+        "content": "p3c"
+      }
+    }
   }
 }
