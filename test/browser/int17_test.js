@@ -11,6 +11,17 @@ test('attribute', function (test) {
   helpers.htmlEqual(test, '.test3 .e2', '<a class="e2" title="test2m a1 a1 a2"></a>');
 });
 
+test('content', function (test) {
+  var inst = int17.create();
+  inst.initSync({ locale: 'en', path: '../fixtures/locales1' });
+  inst.content('#int17 .test3 .e1', 'test1');
+  helpers.htmlEqual(test, '.test3 .e1', '<a class="e1">test1m</a>');
+  inst.content('#int17 .test3 .e1', 'test2');
+  helpers.htmlEqual(test, '.test3 .e1', '<a class="e1">test2m $1 $1 $2</a>');
+  inst.content('#int17 .test3 .e1', 'test2', 'a1', 'a2');
+  helpers.htmlEqual(test, '.test3 .e1', '<a class="e1">test2m a1 a1 a2</a>');
+});
+
 test('create', function (test) {
   var instances = [
       int17.create()
