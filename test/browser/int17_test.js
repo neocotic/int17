@@ -58,7 +58,7 @@ test('init:sync', function (test) {
 asyncTest('languages:async', 3, function (test) {
   var inst  = int17.create()
     , langs = ['en-GB'];
-  inst.init({ path: '../fixtures/locales1' }, function (err) {
+  inst.init({ locale: 'en-GB', path: '../fixtures/locales1' }, function (err) {
     test.ok(!err, 'Error was thrown');
     inst.languages(function (err, languages) {
       test.ok(!err, 'Error was thrown');
@@ -141,7 +141,7 @@ asyncTest('languages:async:manual:folders:parent', 7, function (test) {
 asyncTest('languages:async:parent', 7, function (test) {
   var inst  = int17.create()
     , langs = ['en-GB'];
-  inst.init({ path: '../fixtures/locales1' }, function (err) {
+  inst.init({ locale: 'en-GB', path: '../fixtures/locales1' }, function (err) {
     test.ok(!err, 'Error was thrown');
     inst.languages('en', function (err, languages) {
       test.ok(!err, 'Error was thrown');
@@ -182,7 +182,7 @@ asyncTest('languages:async:parent:folders', 7, function (test) {
 test('languages:sync', function (test) {
   var inst  = int17.create()
     , langs = ['en-GB'];
-  inst.initSync({ path: '../fixtures/locales1' });
+  inst.initSync({ locale: 'en-GB', path: '../fixtures/locales1' });
   test.deepEqual(inst.languagesSync(), langs, 'Not all languages were detected');
 });
 
@@ -229,7 +229,7 @@ test('languages:sync:manual:folders:parent', function (test) {
 test('languages:sync:parent', function (test) {
   var inst  = int17.create()
     , langs = ['en-GB'];
-  inst.initSync({ path: '../fixtures/locales1' });
+  inst.initSync({ locale: 'en-GB', path: '../fixtures/locales1' });
   test.deepEqual(inst.languagesSync('en'), langs, 'Extended languages should be retrieved');
   test.deepEqual(inst.languagesSync('en-GB'), [], 'No languages should be retrieved');
   test.deepEqual(inst.languagesSync('de'), [], 'No languages should be retrieved');
