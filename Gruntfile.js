@@ -23,7 +23,10 @@ module.exports = function(grunt) {
         all: ['test/**/*_test.js', '!test/browser/**/*']
       }
     , qunit:    {
-        all: ['test/browser/**/*.html']
+          all:     ['test/browser/**/*.html']
+        , options: {
+            '--web-security': false
+          }
       }
     , uglify:   {
           all:     {
