@@ -1,4 +1,7 @@
 {
+  "dir": {
+    "message": "ltr"
+  },
   "locale": {
     "message": "en"
   },
@@ -21,5 +24,25 @@
         "content": "p3c"
       }
     }
+  },
+  "test4": {
+    "message": "$prefix$test1$suffix$",
+    "placeholders": {
+      "prefix": {
+        "content": "<span int17-content=\""
+      },
+      "suffix": {
+        "content": "\"></span>"
+      }
+    }
+  },
+  "testOpt1": {
+    "message": "option1"
+  },
+  "testOpt2": {
+    "message": "option2"
+  },
+  "testOpt3": {
+    "message": "option3"
   }
 }

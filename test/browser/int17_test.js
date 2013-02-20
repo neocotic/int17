@@ -245,4 +245,24 @@ test('languages:sync:parent:folders', function (test) {
   test.deepEqual(inst.languagesSync('en'), [], 'No languages should be retrieved');
 });
 
+test('traverse', function (test) {
+  var inst = int17.create();
+  inst.initSync({ locale: 'en', path: '../fixtures/locales1' });
+  inst.traverse();
+  helpers.htmlEqual(test, '.test1 .e1', '<a class="e1" int17-content="test1">test1m</a>');
+  helpers.htmlEqual(test, '.test1 .e2', '<a class="e2" int17-args="a1;a2" int17-content="test2">test2m a1 a1 a2</a>');
+  helpers.htmlEqual(test, '.test1 .e3', '<a class="e3" int17-args="a1;a2" int17-values="title:test2;.style.direction:dir;.innerHTML:test4" title="test2m a1 a1 a2" style="direction: ltr; "><span int17-content="test1">test1m</span></a>');
+  helpers.htmlEqual(test, '.test1 .e4', '<select class="e4" int17-options="testOpt1:-1;testOpt2;testOpt3"><option value="-1">option1</option><option>option2</option><option>option3</option></select>');
+});
+
+test('traverse:clean', function (test) {
+  var inst = int17.create();
+  inst.initSync({ clean: true, locale: 'en', path: '../fixtures/locales1' });
+  inst.traverse();
+  helpers.htmlEqual(test, '.test2 .e1', '<a class="e1">test1m</a>');
+  helpers.htmlEqual(test, '.test2 .e2', '<a class="e2">test2m a1 a1 a2</a>');
+  helpers.htmlEqual(test, '.test2 .e3', '<a class="e3" title="test2m a1 a1 a2" style="direction: ltr; "><span>test1m</span></a>');
+  helpers.htmlEqual(test, '.test2 .e4', '<select class="e4"><option value="-1">option1</option><option>option2</option><option>option3</option></select>');
+});
+
 // TODO: Complete test cases

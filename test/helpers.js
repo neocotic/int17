@@ -57,6 +57,18 @@
     this.equalOnly(test, index, expected, array, message, true);
   };
 
+  // Test that the HTML of the selected element is equal to `expected`.  
+  // The HTML compared is the entire HTML comprised of the element's children as well as the
+  // element itself.
+  Helpers.prototype.htmlEqual = function(test, selector, expected, message) {
+    message = message ? message + ': ' : '';
+    selector = '#int17 ' + (selector || '');
+    var div     = document.createElement('div')
+      , element = document.querySelector(selector);
+    div.appendChild(element);
+    test.equal(div.innerHTML, expected, message + 'HTML not as expected');
+  };
+
   // Expose an instance of `Helpers` for node.js or the browser.
   if (typeof module === 'object' && module.exports) {
     module.exports = new Helpers();
