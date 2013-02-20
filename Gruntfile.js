@@ -4,6 +4,14 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
       pkg:      grunt.file.readJSON('package.json')
+    , connect:  {
+        server: {
+          options: {
+              base: '.'
+            , port: 8000
+          }
+        }
+      }
     , docco:    {
         all: {
             dest: 'docs'
@@ -23,10 +31,11 @@ module.exports = function(grunt) {
         all: ['test/**/*_test.js', '!test/browser/**/*']
       }
     , qunit:    {
-          all:     ['test/browser/**/*.html']
-        , options: {
-            '--web-security': false
+        all: {
+          options: {
+            urls: ['http://localhost:8000/test/browser/int17.html']
           }
+        }
       }
     , uglify:   {
           all:     {
@@ -45,6 +54,7 @@ module.exports = function(grunt) {
       }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-contrib-qunit');
@@ -54,6 +64,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build',   ['docco',  'uglify']);
   grunt.registerTask('default', ['test',   'build']);
-  grunt.registerTask('test',    ['jshint', 'nodeunit', 'qunit']);
+  grunt.registerTask('test',    ['jshint', 'nodeunit', 'connect', 'qunit']);
 
 };
