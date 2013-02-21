@@ -161,9 +161,9 @@ exports.init = {
             , validate:  false
           };
       test.expect(12);
-      inst.init(opts, function (err, messages) {
+      inst.init(opts, function (err) {
         test.ifError(err);
-        test.ok(messages, 'No messages were loaded');
+        test.ok(inst.messenger.messages, 'No messages were loaded');
         helpers.strictContains(test, inst.messenger, opts, 'Options were not set correctly');
         test.done();
       });

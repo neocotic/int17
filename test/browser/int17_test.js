@@ -52,9 +52,9 @@ asyncTest('init:async', 12, function (test) {
         , path:      '../fixtures/locales3'
         , validate:  false
       };
-  inst.init(opts, function (err, messages) {
+  inst.init(opts, function (err) {
     test.ok(!err, 'Error was thrown');
-    test.ok(messages, 'No messages were loaded');
+    test.ok(inst.messenger.messages, 'No messages were loaded');
     helpers.strictContains(test, inst.messenger, opts, 'Options were not set correctly');
     start();
   });
