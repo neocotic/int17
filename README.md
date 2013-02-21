@@ -10,8 +10,26 @@
 
 [![Build Status](https://secure.travis-ci.org/neocotic/int17.png)](http://travis-ci.org/neocotic/int17)
 
-[int17][] can be used normally in any browser as well as in the [node.js][] environment (especially
-with [Express][].
+It can be used normally in any browser as well as in the [node.js][] environment (especially with
+[Express][]).
+
+* [Install](#install)
+* [Examples](#examples)
+* [API](#api)
+   * [Int17](#int17)
+     * [Instances](#instances)
+     * [Miscellaneous](#miscellaneous)
+   * [Internationalization](#internationalization)
+     * [Setup](#setup)
+     * [Browser Only](#browser-only)
+     * [Locales](#locales)
+     * [Messages](#messages)
+     * [Miscellaneous](#miscellaneous-1)
+* [Locale Files](#locale-files)
+* [Attributes](#attributes)
+* [Express](#express)
+* [Bugs](#bugs)
+* [Questions](#questions)
 
 ## Install
 
@@ -473,16 +491,16 @@ TODO: Provide overview and example(s)
 The [traverse([element])](#traverseelement) method automatically recognizes int17-specific HTML
 attributes and handles each element they're attached to accordingly.
 
-### `int17-args`
+##### `int17-args`
 TODO: Provide description and example(s)
 
-### `int17-content`
+##### `int17-content`
 TODO: Provide description and example(s)
 
-### `int17-options`
+##### `int17-options`
 TODO: Provide description and example(s)
 
-### `int17-values`
+##### `int17-values`
 TODO: Provide description and example(s)
 
 ## Express
@@ -522,7 +540,7 @@ app.get('/', function (req, res) {
 
 And just as easily in your templates:
 
-``` html
+```
 <% include header %>
 <h1><%- int17.get('page_header_prefix') %> <%- header %></h1>
 <p><%- intro %></p>
