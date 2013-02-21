@@ -389,7 +389,9 @@ Sets the value of the specified property on all of the selected elements with th
 specified `name`. All remaining arguments are used to replace indexed placeholders within the
 message before it is returned.
 
-`prop` can be identified using paths to change the values of *deep* properties.
+`prop` can be identified using paths to change the values of *deep* properties. If the property is
+`innerHTML`, the contents of each element are *traversed* once being processed to ensure any newly
+inserted [attributes](#attributes) are processed.
 
 ``` javascript
 i18n.property('p', 'style.direction', 'dir');
@@ -535,7 +537,45 @@ See the [Express](#express) section for more information and examples.
 
 ## Locale Files
 
-TODO: Provide overview and example(s)
+[int17][] can be configured to use one of two different file structures using [options](#options):
+
+**Flat**
+
+* locales
+   * en.json
+   * en_GB.json
+   * en_US.json
+   * fr_BE.json
+
+**Folders**
+
+* locales
+   * en
+     * messages.json
+   * en_GB
+     * messages.json
+   * en_US
+     * messages.json
+   * fr_BE
+     * messages.json
+
+Regardless of which file structure is used, the contents of each files should be in a [JSON][]
+format while adhering to the following structure:
+
+``` javascript
+{
+  "<message_name>": {
+    "message": "<message_content>",
+    "description": "<optional_description>",
+    "placeholders": {
+      "<placeholder_name>": {
+        "content": "<example_content>",
+        "example": "<optional_example>"
+      }
+    }
+  }
+}
+```
 
 ## Attributes
 
@@ -543,16 +583,45 @@ The [traverse([element])](#traverseelement) method automatically recognizes int1
 attributes and handles each element they're attached to accordingly.
 
 ##### `int17-args`
-TODO: Provide description and example(s)
+Specifies replacements for indexed placeholders within the messages looked up while processing
+the other attributes.
+
+The attribute value contains semi-colon separated values.
+
+``` html
+<p int17-args="World" int17-content="welcome"></p>
+```
 
 ##### `int17-content`
-TODO: Provide description and example(s)
+Replaces the HTML contents of the element with message for the attribute's value.
+
+``` html
+<h1 int17-content="page_header"></h1>
+```
 
 ##### `int17-options`
-TODO: Provide description and example(s)
+Creates option elements containg the message for each name in the attribute's value.
+
+The attribute value contains semi-colon separated names which can themselves be separated by
+colons to specify values.
+
+``` html
+<select int17-options="default_value:-1;option1;option2;option3"></select>
+```
 
 ##### `int17-values`
-TODO: Provide description and example(s)
+Sets the attribute/property values to their corresponding messages as definied in the attribute's
+value.
+
+The attribute value contains semi-colon separated names which are themselves separated by colons to
+specify their message names. To identify property paths (useful for changing *deep* properties) it
+must begin with a decimal point (`.`). If the property is `.innerHTML`, the contents of each
+element are *traversed* once being processed to ensure any newly inserted [attributes](#attributes)
+are processed.
+
+``` html
+<p int17-values=".innerHTML:page_content;.style.direction:dir;title:main_title"></p>
+```
 
 ## Express
 
@@ -598,7 +667,7 @@ And just as easily in your templates:
 <% include footer %>
 ```
 
-*Note:* This example is using the [ejs][] template engine.
+**Note:** This example is using the [ejs][] template engine.
 
 ## Bugs
 
