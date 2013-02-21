@@ -8,7 +8,7 @@ module.exports = function(grunt) {
         server: {
           options: {
               base: '.'
-            , port: 8000
+            , port: 3000
           }
         }
       }
@@ -33,7 +33,7 @@ module.exports = function(grunt) {
     , qunit:    {
         all: {
           options: {
-            urls: ['http://localhost:8000/test/browser/int17.html']
+            urls: ['http://localhost:3000/test/browser/int17.html']
           }
         }
       }
