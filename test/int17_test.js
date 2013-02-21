@@ -59,27 +59,6 @@ exports.testCreate = function(test) {
   test.done();
 };
 
-exports.testExpress = function(test) {
-  var app  = {}
-    , inst = int17.create();
-  test.expect(4);
-  app.dynamicHelpers = function(helpers) {
-    test.ok(helpers, 'Helpers should be provided');
-    test.strictEqual(helpers.int17, inst, 'Helpers should contain reference to instance');
-  };
-  app.use = function(fn) {
-    var req = {}
-      , res = { locals: {} };
-    fn(req, res, function () {
-      test.strictEqual(req.int17, inst, 'Request should contain reference to instance');
-      test.strictEqual(res.locals.int17, inst,
-        'Response local variables should contain reference to instance');
-    });
-  };
-  inst.express(app);
-  test.done();
-};
-
 exports.testGet = function(test) {
   var inst = int17.create();
   inst.initSync({ path: './test/fixtures/locales1' });
@@ -143,6 +122,49 @@ exports.testMap = function(test) {
     test3: 'test3m a1 a1 a2 p1c p2c a1 p3c'
   });
   test.done();
+};
+
+exports.express = {
+    testBasic: function(test) {
+      var app  = {}
+        , inst = int17.create();
+      test.expect(4);
+      app.dynamicHelpers = function(helpers) {
+        test.ok(helpers, 'Helpers should be provided');
+        test.strictEqual(helpers.int17, inst, 'Helpers should contain reference to instance');
+      };
+      app.use = function(fn) {
+        var req = {}
+          , res = { locals: {} };
+        fn(req, res, function () {
+          test.strictEqual(req.int17, inst, 'Request should contain reference to instance');
+          test.strictEqual(res.locals.int17, inst,
+            'Response local variables should contain reference to instance');
+        });
+      };
+      inst.express(app);
+      test.done();
+    }
+  , testNamed: function(test) {
+      var app  = {}
+        , inst = int17.create();
+      test.expect(4);
+      app.dynamicHelpers = function(helpers) {
+        test.ok(helpers, 'Helpers should be provided');
+        test.strictEqual(helpers.i18n, inst, 'Helpers should contain reference to instance');
+      };
+      app.use = function(fn) {
+        var req = {}
+          , res = { locals: {} };
+        fn(req, res, function () {
+          test.strictEqual(req.i18n, inst, 'Request should contain reference to instance');
+          test.strictEqual(res.locals.i18n, inst,
+            'Response local variables should contain reference to instance');
+        });
+      };
+      inst.express(app, 'i18n');
+      test.done();
+    }
 };
 
 exports.init = {
