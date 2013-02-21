@@ -174,7 +174,7 @@ exports.init = {
               clean:     true
             , encoding:  'UTF-8'
             , extension: '.js'
-            , fallback:  false
+            , fallback:  true
             , fileName:  'msgs'
             , folders:   true
             , locale:    ['fr', 'BE']
@@ -196,7 +196,7 @@ exports.init = {
               clean:     true
             , encoding:  'UTF-8'
             , extension: '.js'
-            , fallback:  false
+            , fallback:  true
             , fileName:  'msgs'
             , folders:   true
             , locale:    ['fr', 'BE']
