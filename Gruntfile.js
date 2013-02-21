@@ -14,8 +14,10 @@ module.exports = function(grunt) {
       }
     , docco:    {
         all: {
-            dest: 'docs'
-          , src:  ['lib/**/*.js']
+            options: {
+              output: 'docs'
+            }
+          , src:     ['lib/**/*.js']
         }
       }
     , jshint:   {
