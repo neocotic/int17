@@ -267,6 +267,21 @@ test('languages:sync:parent:folders', function (test) {
   test.deepEqual(inst.languagesSync('en'), [], 'No languages should be retrieved');
 });
 
+test('property', function (test) {
+  var inst = int17.create();
+  inst.initSync({ locale: 'en', path: '../fixtures/locales1' });
+  inst.property('#int17 .test3 .e3', 'title', 'test1');
+  helpers.htmlEqual(test, '.test3 .e3', '<a class="e3" title="test1m"></a>');
+  inst.property('#int17 .test3 .e3', 'title', 'test2');
+  helpers.htmlEqual(test, '.test3 .e3', '<a class="e3" title="test2m $1 $1 $2"></a>');
+  inst.property('#int17 .test3 .e3', 'title', 'test2', 'a1', 'a2');
+  helpers.htmlEqual(test, '.test3 .e3', '<a class="e3" title="test2m a1 a1 a2"></a>');
+  inst.property('#int17 .test3 .e3', 'style.direction', 'dir');
+  helpers.htmlEqual(test, '.test3 .e3', '<a class="e3" style="direction: ltr; "></a>');
+  inst.property('#int17 .test3 .e3', 'innerHTML', 'test4');
+  helpers.htmlEqual(test, '.test3 .e3', '<a class="e3"><span>test1m</span></a>');
+});
+
 test('traverse', function (test) {
   var inst = int17.create();
   inst.initSync({ locale: 'en', path: '../fixtures/locales1' });
