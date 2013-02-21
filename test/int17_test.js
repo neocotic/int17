@@ -1,6 +1,7 @@
 'use strict';
 
-var helpers = require('./helpers')
+var fs      = require('fs')
+  , helpers = require('./helpers')
   , int17   = require('../lib/int17');
 
 exports.testAll = function(test) {
@@ -122,6 +123,15 @@ exports.testMap = function(test) {
     test3: 'test3m a1 a1 a2 p1c p2c a1 p3c'
   });
   test.done();
+};
+
+exports.testVersion = function(test) {
+  test.expect(2);
+  fs.readFile('./package.json', 'utf8', function (err, data) {
+    test.ifError(err);
+    test.equal(int17.version, JSON.parse(data).version, 'Wrong version was found');
+    test.done();
+  });
 };
 
 exports.express = {
