@@ -337,10 +337,24 @@ The following options are recognised by these methods (all of which are optional
 #### Browser Only
 
 ##### `attribute(selector, attr, name, [...])`
-TODO: Provide description and example(s)
+Sets the value of the specified attribute on all of the selected elements with the message for the
+specified `name`. All remaining arguments are used to replace indexed placeholders within the
+message before it is returned.
+
+``` javascript
+i18n.attribute('a', 'title', 'link_title');
+i18n.attribute('a.download', 'title', 'open_file');
+```
 
 ##### `content(selector, name, [...])`
-TODO: Provide description and example(s)
+Replaces the contents of all of the selected elements with the message for the specified `name`.
+All remaining arguments are used to replace indexed placeholders within the message before it is
+returned.
+
+``` javascript
+i18n.content('h1', 'page_header');
+i18n.content('p', 'welcome', 'World');
+```
 
 ##### `node`
 The element whose children are within scope of all [browser only](#browser-only) methods. By
@@ -352,13 +366,50 @@ console.log(i18n.node); // "HTMLDocument"
 ```
 
 ##### `options(selector, names, [...])`
-TODO: Provide description and example(s)
+Creates option elements containing the messages for the specified `names` and appends the to all of
+the selected elements. All remaining arguments are used to replace indexed placeholders within the
+message before it is returned.
+
+`names` can consist of a mix of strings and objects containing a `name` string and, optionally, an
+`args` list as well as a `value`. When used, the optional `args` property of a name object
+overrides any replacement arguments passed to the method when that particular message is processed
+while the `value` property is transfered to that option.
+
+``` javascript
+i18n.options('select', [
+  { name: 'default_option', value: '-1' },
+  'option1',
+  { name: 'option2' },
+  { name: 'option2', args: ['2'] }
+], 'Two');
+```
 
 ##### `property(selector, prop, name, [...])`
-TODO: Provide description and example(s)
+Sets the value of the specified property on all of the selected elements with the message for the
+specified `name`. All remaining arguments are used to replace indexed placeholders within the
+message before it is returned.
+
+`prop` can be identified using paths to change the values of *deep* properties.
+
+``` javascript
+i18n.property('p', 'style.direction', 'dir');
+i18n.property('p', 'innerHTML', 'welcome', 'World');
+```
 
 ##### `traverse([element])`
-TODO: Provide description and example(s)
+Searches the children of the specified `element` (defaulting to [node](#node)) for elements with
+any of the recognized [HTML attributes](#attributes) and then processes each child accordingly.
+
+`element` can either be an HTML element node or a query selector string which, when used, will be
+used to query the children of [node](#node) for the actual element to be traversed.
+
+``` javascript
+// Traverses the children of i18n.node
+i18n.traverse();
+// Both of these do the same thing: traverses the children of <body> element
+i18n.traverse(document.body);
+i18n.traverse('body');
+```
 
 #### Locales
 
