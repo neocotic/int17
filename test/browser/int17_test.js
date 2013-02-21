@@ -267,6 +267,28 @@ test('languages:sync:parent:folders', function (test) {
   test.deepEqual(inst.languagesSync('en'), [], 'No languages should be retrieved');
 });
 
+test('options', function (test) {
+  var inst = int17.create();
+  inst.initSync({ locale: 'en', path: '../fixtures/locales1' });
+  inst.options('#int17 .test3 .e4', ['testOpt1', 'testOpt2', 'testOpt3']);
+  helpers.htmlEqual(test, '.test3 .e4', '<select class="e4"><option>option1</option>' +
+    '<option>option2</option><option>option3</option></select>');
+  inst.options('#int17 .test3 .e5', [
+      'testOpt1'
+    , { name: 'testOpt2' }
+    , { name: 'testOpt3', value: -1 }
+  ]);
+  helpers.htmlEqual(test, '.test3 .e5', '<select class="e5"><option>option1</option>' +
+    '<option>option2</option><option value="-1">option3</option></select>');
+  inst.options('#int17 .test3 .e6', [
+      { name: 'test2' }
+    , { name: 'test2', args: [] }
+    , { name: 'test2', args: ['a1b', 'a2b'], value: -1 }
+  ], 'a1', 'a2');
+  helpers.htmlEqual(test, '.test3 .e6', '<select class="e6"><option>test2m a1 a1 a2</option>' +
+    '<option>test2m $1 $1 $2</option><option value="-1">test2m a1b a1b a2b</option></select>');
+});
+
 test('property', function (test) {
   var inst = int17.create();
   inst.initSync({ locale: 'en', path: '../fixtures/locales1' });
@@ -310,5 +332,3 @@ test('traverse:clean', function (test) {
   helpers.htmlEqual(test, '.test2 .e5', '<select class="e5"><option value="-1">option1</option>' +
     '<option>option2</option><option>option3</option></select>');
 });
-
-// TODO: Complete test cases
