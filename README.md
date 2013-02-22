@@ -366,9 +366,9 @@ console.log(i18n.node); // "HTMLDocument"
 ```
 
 ##### `options(selector, names, [...])`
-Creates option elements containing the messages for the specified `names` and appends the to all of
-the selected elements. All remaining arguments are used to replace indexed placeholders within the
-message before it is returned.
+Creates option elements containing the messages for the specified `names` and appends them to all
+of the selected elements. All remaining arguments are used to replace indexed placeholders within
+the message before it is returned.
 
 `names` can consist of a mix of strings and objects containing a `name` string and, optionally, an
 `args` list as well as a `value`. When used, the optional `args` property of a name object
@@ -678,7 +678,7 @@ https://github.com/neocotic/int17/issues
 
 ## Questions?
 
-Take a look at `docs/int17.html` to get a better understanding of what the code is doing.
+Take a look at `docs/*` to get a better understanding of what the code is doing.
 
 If that doesn't help, feel free to follow me on Twitter, [@neocotic][].
 
