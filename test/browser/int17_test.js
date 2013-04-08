@@ -282,8 +282,8 @@ test('options', function (test) {
     '<option>option2</option><option value="-1">option3</option></select>');
   inst.options('#int17 .test3 .e6', [
       { name: 'test2' }
-    , { name: 'test2', args: [] }
-    , { name: 'test2', args: ['a1b', 'a2b'], value: -1 }
+    , { name: 'test2', subs: [] }
+    , { name: 'test2', subs: ['a1b', 'a2b'], value: -1 }
   ], 'a1', 'a2');
   helpers.htmlEqual(test, '.test3 .e6', '<select class="e6"><option>test2m a1 a1 a2</option>' +
     '<option>test2m $1 $1 $2</option><option value="-1">test2m a1b a1b a2b</option></select>');
@@ -310,9 +310,9 @@ test('traverse', function (test) {
   inst.traverse('#int17 .test1');
   helpers.htmlEqual(test, '.test1 .e1', '<a class="e1" int17-content="test1">test1m</a>');
   helpers.htmlEqual(test, '.test1 .e2', '<a class="e2" int17-content="test2">test2m $1 $1 $2</a>');
-  helpers.htmlEqual(test, '.test1 .e3', '<a class="e3" int17-args="a1;a2" int17-content="test2">' +
+  helpers.htmlEqual(test, '.test1 .e3', '<a class="e3" int17-subs="a1;a2" int17-content="test2">' +
     'test2m a1 a1 a2</a>');
-  helpers.htmlEqual(test, '.test1 .e4', '<a class="e4" int17-args="a1;a2" ' +
+  helpers.htmlEqual(test, '.test1 .e4', '<a class="e4" int17-subs="a1;a2" ' +
     'int17-values="title:test2;.style.direction:dir;.innerHTML:test4" title="test2m a1 a1 a2" ' +
     'style="direction: ltr; "><span int17-content="test1">test1m</span></a>');
   helpers.htmlEqual(test, '.test1 .e5', '<select class="e5" ' +
