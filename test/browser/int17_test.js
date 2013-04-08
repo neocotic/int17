@@ -309,10 +309,11 @@ test('traverse', function (test) {
   inst.initSync({ locale: 'en', path: '../fixtures/locales1' });
   inst.traverse('#int17 .test1');
   helpers.htmlEqual(test, '.test1 .e1', '<a class="e1" int17-content="test1">test1m</a>');
-  helpers.htmlEqual(test, '.test1 .e2', '<a class="e2" int17-content="test2">test2m $1 $1 $2</a>');
+  helpers.htmlEqual(test, '.test1 .e2', '<a class="e2" data-int17-content="test2">' +
+    'test2m $1 $1 $2</a>');
   helpers.htmlEqual(test, '.test1 .e3', '<a class="e3" int17-subs="a1;a2" int17-content="test2">' +
     'test2m a1 a1 a2</a>');
-  helpers.htmlEqual(test, '.test1 .e4', '<a class="e4" int17-subs="a1;a2" ' +
+  helpers.htmlEqual(test, '.test1 .e4', '<a class="e4" data-int17-subs="a1;a2" ' +
     'int17-values="title:test2;.style.direction:dir;.innerHTML:test4" title="test2m a1 a1 a2" ' +
     'style="direction: ltr; "><span int17-content="test1">test1m</span></a>');
   helpers.htmlEqual(test, '.test1 .e5', '<select class="e5" ' +
