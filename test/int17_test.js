@@ -20,8 +20,8 @@ exports.testAll = function(test) {
       'test1'
     , 'test2'
     , { name: 'test3' }
-    , { name: 'test3', args: [] }
-    , { name: 'test3', args: ['a1b', 'a2b'] }
+    , { name: 'test3', subs: [] }
+    , { name: 'test3', subs: ['a1b', 'a2b'] }
   ], 'a1', 'a2'), [
       'test1m'
     , 'test2m a1 a1 a2'
@@ -33,7 +33,7 @@ exports.testAll = function(test) {
       'test1'
     , 'test2'
     , 'test3'
-    , { name: 'test3', args: ['a1', 'a2'] }
+    , { name: 'test3', subs: ['a1', 'a2'] }
   ]), [
       'test1m'
     , 'test2m $1 $1 $2'
@@ -98,27 +98,27 @@ exports.testMap = function(test) {
       'test1'
     , 'test2'
     , { name: 'test3' }
-    , { name: 'test3', args: [] }
-    , { name: 'test3', args: ['a1b', 'a2b'] }
+    , { name: 'test3', subs: [] }
+    , { name: 'test3', subs: ['a1b', 'a2b'] }
   ], 'a1', 'a2'), {
       test1: 'test1m'
     , test2: 'test2m a1 a1 a2'
     , test3: 'test3m a1b a1b a2b p1c p2c a1b p3c'
   });
   test.deepEqual(inst.map([
-      { name: 'test3', args: [] }
+      { name: 'test3', subs: [] }
     , { name: 'test3' }
   ], 'a1', 'a2'), {
     test3: 'test3m a1 a1 a2 p1c p2c a1 p3c'
   });
   test.deepEqual(inst.map([
       { name: 'test3' }
-    , { name: 'test3', args: [] }
+    , { name: 'test3', subs: [] }
   ], 'a1', 'a2'), {
     test3: 'test3m $1 $1 $2 p1c p2c $1 p3c'
   });
   test.deepEqual(inst.map([
-    { name: 'test3', args: ['a1', 'a2'] }
+    { name: 'test3', subs: ['a1', 'a2'] }
   ]), {
     test3: 'test3m a1 a1 a2 p1c p2c a1 p3c'
   });
