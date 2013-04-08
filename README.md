@@ -33,10 +33,13 @@ It can be used normally in any browser as well as in the [node.js][] environment
 
 ## Install
 
-Install from [npm][]:
+Install using the package manager for your desired environment(s):
 
 ``` bash
+# for node.js:
 $ npm install int17
+# OR; for the browser:
+$ bower install int17
 ```
 
 ## Examples
@@ -58,7 +61,7 @@ In the browser:
     </script>
   </head>
   <body>
-    <h1 int17-args="2013" int17-content="date_header"></h1>
+    <h1 int17-subs="2013" int17-content="date_header"></h1>
     <div>
       <p int17-values=".style.direction:dir;.innerHTML:main_body"></p>
       <span int17-content="my_label"></span>
@@ -178,7 +181,7 @@ This is really just intended for use within a browser.
 The current version of `int17`.
 
 ``` javascript
-console.log(int17.version); // "0.1.0"
+console.log(int17.version); // "0.2.0"
 ```
 
 ### Internationalization
@@ -371,7 +374,7 @@ of the selected elements. All remaining arguments are used to replace indexed pl
 the message before it is returned.
 
 `names` can consist of a mix of strings and objects containing a `name` string and, optionally, an
-`args` list as well as a `value`. When used, the optional `args` property of a name object
+`subs` list as well as a `value`. When used, the optional `subs` property of a name object
 overrides any replacement arguments passed to the method when that particular message is processed
 while the `value` property is transfered to that option.
 
@@ -380,7 +383,7 @@ i18n.options('select', [
   { name: 'default_option', value: '-1' },
   'option1',
   { name: 'option2' },
-  { name: 'option2', args: ['2'] }
+  { name: 'option2', subs: ['2'] }
 ], 'Two');
 ```
 
@@ -479,15 +482,15 @@ Returns a list of messages for each of the specified `names`. All remaining argu
 replace indexed placeholders within each message before they are returned.
 
 `names` can consist of a mix of strings and objects containing a `name` string and, optionally, an
-`args` list as well. When used, the optional `args` property of a name object overrides any
+`subs` list as well. When used, the optional `subs` property of a name object overrides any
 replacement arguments passed to the method when that particular message is processed.
 
 ``` javascript
 doSomething(i18n.all([
   'my_message',
   { name: 'welcome' },
-  { name: 'welcome', args: [] },
-  { name: 'welcome', args: ['Universe'] }
+  { name: 'welcome', subs: [] },
+  { name: 'welcome', subs: ['Universe'] }
 ], 'World'));
 // [
 //   'Lorem ipsum',
@@ -511,14 +514,14 @@ Maps each of the specified `names` to their corresponding message. All remaining
 to replace indexed placeholders within each message before they are returned.
 
 `names` can consist of a mix of strings and objects containing a `name` string and, optionally, an
-`args` list as well. When used, the optional `args` property of a name object overrides any
+`subs` list as well. When used, the optional `subs` property of a name object overrides any
 replacement arguments passed to the method when that particular message is processed.
 
 ``` javascript
 doSomething(i18n.map([
   'my_message',
   { name: 'welcome' },
-  { name: 'welcome', args: ['Universe'] }
+  { name: 'welcome', subs: ['Universe'] }
 ], 'World'));
 // {
 //   my_message: 'Lorem ipsum',
@@ -582,15 +585,8 @@ format while adhering to the following structure:
 The [traverse([element])](#traverseelement) method automatically recognizes int17-specific HTML
 attributes and handles each element they're attached to accordingly.
 
-##### `int17-args`
-Specifies replacements for indexed placeholders within the messages looked up while processing
-the other attributes.
-
-The attribute value contains semi-colon separated values.
-
-``` html
-<p int17-args="World" int17-content="welcome"></p>
-```
+Altenatively, you can use HTML5 data attribute names if you want your pages to contain only
+strictly valid HTML5 (e.g. `data-int17-content`).
 
 ##### `int17-content`
 Replaces the HTML contents of the element with message for the attribute's value.
@@ -621,6 +617,16 @@ are processed.
 
 ``` html
 <p int17-values=".innerHTML:page_content;.style.direction:dir;title:main_title"></p>
+```
+
+##### `int17-subs`
+Specifies replacements for indexed placeholders within the messages looked up while processing
+the other attributes.
+
+The attribute value contains semi-colon separated values.
+
+``` html
+<p int17-subs="World" int17-content="welcome"></p>
 ```
 
 ## Express
@@ -695,4 +701,3 @@ http://neocotic.com/int17
 [internationalization and localization]: http://en.wikipedia.org/wiki/Internationalization_and_localization
 [json]: http://www.json.org
 [node.js]: http://nodejs.org
-[npm]: http://npmjs.org
