@@ -585,15 +585,8 @@ format while adhering to the following structure:
 The [traverse([element])](#traverseelement) method automatically recognizes int17-specific HTML
 attributes and handles each element they're attached to accordingly.
 
-##### `int17-subs`
-Specifies replacements for indexed placeholders within the messages looked up while processing
-the other attributes.
-
-The attribute value contains semi-colon separated values.
-
-``` html
-<p int17-subs="World" int17-content="welcome"></p>
-```
+Altenatively, you can use HTML5 data attribute names if you want your pages to contain only
+strictly valid HTML5 (e.g. `data-int17-content`).
 
 ##### `int17-content`
 Replaces the HTML contents of the element with message for the attribute's value.
@@ -624,6 +617,16 @@ are processed.
 
 ``` html
 <p int17-values=".innerHTML:page_content;.style.direction:dir;title:main_title"></p>
+```
+
+##### `int17-subs`
+Specifies replacements for indexed placeholders within the messages looked up while processing
+the other attributes.
+
+The attribute value contains semi-colon separated values.
+
+``` html
+<p int17-subs="World" int17-content="welcome"></p>
 ```
 
 ## Express
