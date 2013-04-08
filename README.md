@@ -33,10 +33,13 @@ It can be used normally in any browser as well as in the [node.js][] environment
 
 ## Install
 
-Install from [npm][]:
+Install using the package manager for your desired environment(s):
 
 ``` bash
+# for node.js:
 $ npm install int17
+# OR; for the browser:
+$ bower install int17
 ```
 
 ## Examples
@@ -695,4 +698,3 @@ http://neocotic.com/int17
 [internationalization and localization]: http://en.wikipedia.org/wiki/Internationalization_and_localization
 [json]: http://www.json.org
 [node.js]: http://nodejs.org
-[npm]: http://npmjs.org
