@@ -373,7 +373,7 @@ Creates option elements containing the messages for the specified `names` and ap
 of the selected elements. All remaining arguments are used to replace indexed placeholders within
 the message before it is returned.
 
-`names` can consist of a mix of strings and objects containing a `name` string and, optionally, an
+`names` can consist of a mix of strings and objects containing a `name` string and, optionally, a
 `subs` list as well as a `value`. When used, the optional `subs` property of a name object
 overrides any replacement arguments passed to the method when that particular message is processed
 while the `value` property is transfered to that option.
@@ -432,12 +432,12 @@ pattern.
 // Fetch all available languages
 i18n.languages(function (err, languages) {
   if (err) throw err;
-  doSomething(languages);     // e.g. "en", "en-GB", "en-US", "fr"
+  console.log(languages); // e.g. "en", "en-GB", "en-US", "fr"
 });
 // Fetch available languages that extend from "en"
 i18n.languages('en', function (err, languages) {
   if (err) throw err;
-  doSomethingElse(languages); // e.g. "en-GB", "en-US"
+  console.log(languages); // e.g. "en-GB", "en-US"
 });
 ```
 
@@ -450,9 +450,9 @@ The [languages](#languages) are initially fetched synchronously (thread-blocking
 
 ``` javascript
 // Return all available languages
-doSomething(i18n.languagesSync());         // e.g. "en", "en-GB", "en-US", "fr"
+console.log(i18n.languagesSync());     // e.g. "en", "en-GB", "en-US", "fr"
 // Return available languages that extend from "en"
-doSomethingElse(i18n.languagesSync('en')); // e.g. "en-GB", "en-US"
+console.log(i18n.languagesSync('en')); // e.g. "en-GB", "en-US"
 ```
 
 ##### Languages
@@ -481,23 +481,25 @@ console.log(i18n.locale()); // e.g. "en", "en-GB"
 Returns a list of messages for each of the specified `names`. All remaining arguments are used to
 replace indexed placeholders within each message before they are returned.
 
-`names` can consist of a mix of strings and objects containing a `name` string and, optionally, an
+`names` can consist of a mix of strings and objects containing a `name` string and, optionally, a
 `subs` list as well. When used, the optional `subs` property of a name object overrides any
 replacement arguments passed to the method when that particular message is processed.
 
 ``` javascript
-doSomething(i18n.all([
+console.log(i18n.all([
   'my_message',
   { name: 'welcome' },
   { name: 'welcome', subs: [] },
   { name: 'welcome', subs: ['Universe'] }
 ], 'World'));
-// [
-//   'Lorem ipsum',
-//   'Hello, World!',
-//   'Hello, $1!',
-//   'Hello, Universe!'
-// ]
+/*
+[
+  'Lorem ipsum',
+  'Hello, World!',
+  'Hello, $1!',
+  'Hello, Universe!'
+]
+*/
 ```
 
 ##### `get(name, [...])`
@@ -513,20 +515,43 @@ console.log(i18n.get('welcome', 'World')); // "Hello, World!"
 Maps each of the specified `names` to their corresponding message. All remaining arguments are used
 to replace indexed placeholders within each message before they are returned.
 
-`names` can consist of a mix of strings and objects containing a `name` string and, optionally, an
+`names` can consist of a mix of strings and objects containing a `name` string and, optionally, a
 `subs` list as well. When used, the optional `subs` property of a name object overrides any
 replacement arguments passed to the method when that particular message is processed.
 
 ``` javascript
-doSomething(i18n.map([
+console.log(i18n.map([
   'my_message',
   { name: 'welcome' },
   { name: 'welcome', subs: ['Universe'] }
 ], 'World'));
-// {
-//   my_message: 'Lorem ipsum',
-//   welcome:    'Hello, Universe!'
-// }
+/*
+{
+  my_message: 'Lorem ipsum',
+  welcome:    'Hello, Universe!'
+}
+*/
+```
+
+##### Escape HTML
+You can also access each of these methods on the `escape` namespace, where their results have
+already been escaped so that it is safe for HTML interpolation.
+
+``` javascript
+console.log(i18n.escape.all(['north_south']));
+// [ 'North &amp; South' ]
+console.log(i18n.escape.get('breadcrumb'));
+// "Home &gt; News"
+console.log(i18n.escape.map([
+  'north_south',
+  'breadcrumb'
+]));
+/*
+{
+  north_south: 'North &ampl; South',
+  breadcrumb:  'Home &gt; News'
+}
+*/
 ```
 
 #### Miscellaneous
