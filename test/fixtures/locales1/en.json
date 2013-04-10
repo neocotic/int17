@@ -36,6 +36,9 @@
       }
     }
   },
+  "testEscape": {
+    "message": "& < > \" ' /"
+  },
   "testOpt1": {
     "message": "option1"
   },

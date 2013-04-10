@@ -2,6 +2,9 @@
 
   'use strict';
 
+  // Quick reference to core prototypes.
+  var slice = Array.prototype.slice;
+
   // Creates a new instance of `Helpers`.
   function Helpers() {}
 
@@ -28,27 +31,26 @@
   // indices.
   Helpers.prototype.equalOnly = function(test, index, expected, array, message, strict) {
     message = message ? message + ': ' : '';
-    var i, isExpected, j
+    var isExpected
       , equalMethod    = strict ? 'strictEqual' : 'equal'
       , notEqualMethod = strict ? 'notStrictEqual' : 'notEqual';
-    for (i = 0; i < array.length; i++) {
+    array.forEach(function (value, i) {
       isExpected = index === i;
       if (!isExpected) {
-        for (j = 0; j < expected.length; j++) {
-          if (expected[j] === i) {
+        expected.forEach(function (value, j) {
+          if (value === i) {
             isExpected = true;
-            break;
           }
-        }
+        });
       }
       if (isExpected) {
-        test[equalMethod](array[i], array[index], message + 'item[' + i + '] should equal item[' +
+        test[equalMethod](value, array[index], message + 'item[' + i + '] should equal item[' +
           index + ']');
       } else {
-        test[notEqualMethod](array[i], array[index], message + 'item[' + i +
+        test[notEqualMethod](value, array[index], message + 'item[' + i +
           '] should not equal item[' + index + ']');
       }
-    }
+    });
   };
 
   // Test that the item at `index` within `array` is only *strictly* equal to those within the
@@ -61,16 +63,32 @@
   // The HTML compared is the entire HTML comprised of the element's children as well as the
   // element itself.
   Helpers.prototype.htmlEqual = function(test, selector, expected, message) {
-    message = message ? message + ': ' : '';
     selector = '#int17 ' + (selector || '');
-    var div, i
-      , elements = document.querySelectorAll(selector);
-    for (i = 0; i < elements.length; i++) {
-      div = document.createElement('div');
-      div.appendChild(elements[i]);
-      test.equal(div.innerHTML, expected, message + 'element[' + i + ']\'s HTML not as expected');
-    }
+    message  = message ? message + ': ' : '';
+    var elements = slice.call(document.querySelectorAll(selector));
+    elements.forEach(function (element, index) {
+      var div = document.createElement('div');
+      div.appendChild(element.cloneNode(true));
+      test.equal(div.innerHTML, expected, message + 'element[' + index +
+        ']\'s HTML not as expected');
+    });
   };
+
+  // Return a function to allow the selected elements to have their `innerHTML` reset to the value
+  // when **this function** was first called.
+  Helpers.prototype.resetter = function(selector) {
+    selector = '#int17 ' + (selector || '');
+    var elements = slice.call(document.querySelectorAll(selector))
+      , html     = [];
+    elements.forEach(function (element, index) {
+      html.push(element.innerHTML);
+    });
+    return function () {
+      elements.forEach(function (element, index) {
+        element.innerHTML = html[index];
+      });
+    };
+  }
 
   // Expose an instance of `Helpers` for node.js or the browser.
   if (typeof module === 'object' && module.exports) {
