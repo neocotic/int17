@@ -548,7 +548,7 @@ console.log(i18n.escape.map([
 ]));
 /*
 {
-  north_south: 'North &ampl; South',
+  north_south: 'North &amp; South',
   breadcrumb:  'Home &gt; News'
 }
 */
