@@ -11,10 +11,12 @@ exports.testAll = function(test) {
       'test1'
     , 'test2'
     , 'test3'
+    , 'testEscape'
   ]), [
       'test1m'
     , 'test2m $1 $1 $2'
     , 'test3m $1 $1 $2 p1c p2c $1 p3c'
+    , '& < > " \' /'
   ]);
   test.deepEqual(inst.all([
       'test1'
@@ -22,23 +24,27 @@ exports.testAll = function(test) {
     , { name: 'test3' }
     , { name: 'test3', subs: [] }
     , { name: 'test3', subs: ['a1b', 'a2b'] }
+    , 'testEscape'
   ], 'a1', 'a2'), [
       'test1m'
     , 'test2m a1 a1 a2'
     , 'test3m a1 a1 a2 p1c p2c a1 p3c'
     , 'test3m $1 $1 $2 p1c p2c $1 p3c'
     , 'test3m a1b a1b a2b p1c p2c a1b p3c'
+    , '& < > " \' /'
   ]);
   test.deepEqual(inst.all([
       'test1'
     , 'test2'
     , 'test3'
     , { name: 'test3', subs: ['a1', 'a2'] }
+    , 'testEscape'
   ]), [
       'test1m'
     , 'test2m $1 $1 $2'
     , 'test3m $1 $1 $2 p1c p2c $1 p3c'
     , 'test3m a1 a1 a2 p1c p2c a1 p3c'
+    , '& < > " \' /'
   ]);
   test.done();
 };
@@ -60,6 +66,110 @@ exports.testCreate = function(test) {
   test.done();
 };
 
+exports.escape = {
+    testAll: function(test) {
+      var inst = int17.create();
+      inst.initSync({ path: './test/fixtures/locales1' });
+      test.deepEqual(inst.escape.all([
+          'test1'
+        , 'test2'
+        , 'test3'
+        , 'testEscape'
+      ]), [
+          'test1m'
+        , 'test2m $1 $1 $2'
+        , 'test3m $1 $1 $2 p1c p2c $1 p3c'
+        , '&amp; &lt; &gt; &quot; &#x27; &#x2F;'
+      ]);
+      test.deepEqual(inst.escape.all([
+          'test1'
+        , 'test2'
+        , { name: 'test3' }
+        , { name: 'test3', subs: [] }
+        , { name: 'test3', subs: ['a1b', 'a2b'] }
+        , 'testEscape'
+      ], 'a1', 'a2'), [
+          'test1m'
+        , 'test2m a1 a1 a2'
+        , 'test3m a1 a1 a2 p1c p2c a1 p3c'
+        , 'test3m $1 $1 $2 p1c p2c $1 p3c'
+        , 'test3m a1b a1b a2b p1c p2c a1b p3c'
+        , '&amp; &lt; &gt; &quot; &#x27; &#x2F;'
+      ]);
+      test.deepEqual(inst.escape.all([
+          'test1'
+        , 'test2'
+        , 'test3'
+        , { name: 'test3', subs: ['a1', 'a2'] }
+        , 'testEscape'
+      ]), [
+          'test1m'
+        , 'test2m $1 $1 $2'
+        , 'test3m $1 $1 $2 p1c p2c $1 p3c'
+        , 'test3m a1 a1 a2 p1c p2c a1 p3c'
+        , '&amp; &lt; &gt; &quot; &#x27; &#x2F;'
+      ]);
+      test.done();
+    }
+  , testGet: function(test) {
+      var inst = int17.create();
+      inst.initSync({ path: './test/fixtures/locales1' });
+      test.equal(inst.escape.get('test1'), 'test1m');
+      test.equal(inst.escape.get('test2'), 'test2m $1 $1 $2');
+      test.equal(inst.escape.get('test2', 'a1', 'a2'), 'test2m a1 a1 a2');
+      test.equal(inst.escape.get('test3'), 'test3m $1 $1 $2 p1c p2c $1 p3c');
+      test.equal(inst.escape.get('test3', 'a1', 'a2'), 'test3m a1 a1 a2 p1c p2c a1 p3c');
+      test.equal(inst.escape.get('testEscape'), '&amp; &lt; &gt; &quot; &#x27; &#x2F;');
+      test.done();
+    }
+  , testMap: function(test) {
+      var inst = int17.create();
+      inst.initSync({ path: './test/fixtures/locales1' });
+      test.deepEqual(inst.escape.map([
+          'test1'
+        , 'test2'
+        , 'test3'
+        , 'testEscape'
+      ]), {
+          test1:      'test1m'
+        , test2:      'test2m $1 $1 $2'
+        , test3:      'test3m $1 $1 $2 p1c p2c $1 p3c'
+        , testEscape: '&amp; &lt; &gt; &quot; &#x27; &#x2F;'
+      });
+      test.deepEqual(inst.escape.map([
+          'test1'
+        , 'test2'
+        , { name: 'test3' }
+        , { name: 'test3', subs: [] }
+        , { name: 'test3', subs: ['a1b', 'a2b'] }
+        , { name: 'testEscape' }
+      ], 'a1', 'a2'), {
+          test1:      'test1m'
+        , test2:      'test2m a1 a1 a2'
+        , test3:      'test3m a1b a1b a2b p1c p2c a1b p3c'
+        , testEscape: '&amp; &lt; &gt; &quot; &#x27; &#x2F;'
+      });
+      test.deepEqual(inst.escape.map([
+          { name: 'test3', subs: [] }
+        , { name: 'test3' }
+      ], 'a1', 'a2'), {
+        test3: 'test3m a1 a1 a2 p1c p2c a1 p3c'
+      });
+      test.deepEqual(inst.escape.map([
+          { name: 'test3' }
+        , { name: 'test3', subs: [] }
+      ], 'a1', 'a2'), {
+        test3: 'test3m $1 $1 $2 p1c p2c $1 p3c'
+      });
+      test.deepEqual(inst.escape.map([
+        { name: 'test3', subs: ['a1', 'a2'] }
+      ]), {
+        test3: 'test3m a1 a1 a2 p1c p2c a1 p3c'
+      });
+      test.done();
+    }
+};
+
 exports.testGet = function(test) {
   var inst = int17.create();
   inst.initSync({ path: './test/fixtures/locales1' });
@@ -68,6 +178,7 @@ exports.testGet = function(test) {
   test.equal(inst.get('test2', 'a1', 'a2'), 'test2m a1 a1 a2');
   test.equal(inst.get('test3'), 'test3m $1 $1 $2 p1c p2c $1 p3c');
   test.equal(inst.get('test3', 'a1', 'a2'), 'test3m a1 a1 a2 p1c p2c a1 p3c');
+  test.equal(inst.get('testEscape'), '& < > " \' /');
   test.done();
 };
 
@@ -89,10 +200,12 @@ exports.testMap = function(test) {
       'test1'
     , 'test2'
     , 'test3'
+    , 'testEscape'
   ]), {
-      test1: 'test1m'
-    , test2: 'test2m $1 $1 $2'
-    , test3: 'test3m $1 $1 $2 p1c p2c $1 p3c'
+      test1:      'test1m'
+    , test2:      'test2m $1 $1 $2'
+    , test3:      'test3m $1 $1 $2 p1c p2c $1 p3c'
+    , testEscape: '& < > " \' /'
   });
   test.deepEqual(inst.map([
       'test1'
@@ -100,10 +213,12 @@ exports.testMap = function(test) {
     , { name: 'test3' }
     , { name: 'test3', subs: [] }
     , { name: 'test3', subs: ['a1b', 'a2b'] }
+    , { name: 'testEscape' }
   ], 'a1', 'a2'), {
-      test1: 'test1m'
-    , test2: 'test2m a1 a1 a2'
-    , test3: 'test3m a1b a1b a2b p1c p2c a1b p3c'
+      test1:      'test1m'
+    , test2:      'test2m a1 a1 a2'
+    , test3:      'test3m a1b a1b a2b p1c p2c a1b p3c'
+    , testEscape: '& < > " \' /'
   });
   test.deepEqual(inst.map([
       { name: 'test3', subs: [] }
