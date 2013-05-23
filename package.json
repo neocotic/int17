@@ -1,7 +1,7 @@
 {
   "name": "int17",
   "description": "Internationalization JavaScript library",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "homepage": "http://neocotic.com/int17",
   "bugs": {
     "url": "https://github.com/neocotic/int17/issues"

@@ -181,7 +181,7 @@ This is really just intended for use within a browser.
 The current version of `int17`.
 
 ``` javascript
-console.log(int17.version); // "0.2.1"
+console.log(int17.version); // "0.2.2"
 ```
 
 ### Internationalization
