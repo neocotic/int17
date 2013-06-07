@@ -1,7 +1,7 @@
 {
   "dir": {
-      "message": "ltr"
-    , "description": "Text direction"
+      "message": "ltr",
+      "description": "Text direction"
   },
   "locale": {
     "message": "en",

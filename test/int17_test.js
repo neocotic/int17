@@ -192,7 +192,6 @@ exports.get = {
     }
 };
 
-
 exports.testLocale = function(test) {
   var i
     , inst    = int17.create()
