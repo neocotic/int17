@@ -42,7 +42,10 @@ module.exports = function(grunt) {
     , uglify:   {
           all:     {
             files: {
-              'dist/<%= pkg.name %>.min.js': ['lib/<%= pkg.name %>.js']
+              'dist/<%= pkg.name %>.min.js': [
+                  'lib/<%= pkg.name %>.js'
+                , 'lib/jquery.<%= pkg.name %>.js'
+              ]
             }
           }
         , options: {
