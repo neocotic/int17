@@ -61,11 +61,11 @@ In the browser:
     </script>
   </head>
   <body>
-    <h1 int17-subs="2013" int17-content="date_header"></h1>
+    <h1 i18n-subs="2013" i18n-content="date_header"></h1>
     <div>
-      <p int17-values=".style.direction:dir;.innerHTML:main_body"></p>
-      <span int17-content="my_label"></span>
-      <select int17-options="default_option:-1;option1;option2"></select>
+      <p i18n-values=".style.direction:dir;.innerHTML:main_body"></p>
+      <span i18n-content="my_label"></span>
+      <select i18n-options="default_option:-1;option1;option2"></select>
     </div>
   </body>
 </html>
@@ -611,26 +611,29 @@ The [traverse([element])](#traverseelement) method automatically recognizes int1
 attributes and handles each element they're attached to accordingly.
 
 Altenatively, you can use HTML5 data attribute names if you want your pages to contain only
-strictly valid HTML5 (e.g. `data-int17-content`).
+strictly valid HTML5 (e.g. `data-i18n-content`).
 
-##### `int17-content`
+*Note: Attributes using the `int17` prefix have been deprecrated as of v0.3.0 in favour of the more
+generic `i18n` prefix and will be removed completely in a future release*
+
+##### `i18n-content`
 Replaces the HTML contents of the element with message for the attribute's value.
 
 ``` html
-<h1 int17-content="page_header"></h1>
+<h1 i18n-content="page_header"></h1>
 ```
 
-##### `int17-options`
+##### `i18n-options`
 Creates option elements containg the message for each name in the attribute's value.
 
 The attribute value contains semi-colon separated names which can themselves be separated by
 colons to specify values.
 
 ``` html
-<select int17-options="default_value:-1;option1;option2;option3"></select>
+<select i18n-options="default_value:-1;option1;option2;option3"></select>
 ```
 
-##### `int17-values`
+##### `i18n-values`
 Sets the attribute/property values to their corresponding messages as definied in the attribute's
 value.
 
@@ -641,17 +644,17 @@ element are *traversed* once being processed to ensure any newly inserted [attri
 are processed.
 
 ``` html
-<p int17-values=".innerHTML:page_content;.style.direction:dir;title:main_title"></p>
+<p i18n-values=".innerHTML:page_content;.style.direction:dir;title:main_title"></p>
 ```
 
-##### `int17-subs`
+##### `i18n-subs`
 Specifies replacements for indexed placeholders within the messages looked up while processing
 the other attributes.
 
 The attribute value contains semi-colon separated values.
 
 ``` html
-<p int17-subs="World" int17-content="welcome"></p>
+<p i18n-subs="World" i18n-content="welcome"></p>
 ```
 
 ## Express
