@@ -170,16 +170,26 @@ exports.escape = {
     }
 };
 
-exports.testGet = function(test) {
-  var inst = int17.create();
-  inst.initSync({ path: './test/fixtures/locales1' });
-  test.equal(inst.get('test1'), 'test1m');
-  test.equal(inst.get('test2'), 'test2m $1 $1 $2');
-  test.equal(inst.get('test2', 'a1', 'a2'), 'test2m a1 a1 a2');
-  test.equal(inst.get('test3'), 'test3m $1 $1 $2 p1c p2c $1 p3c');
-  test.equal(inst.get('test3', 'a1', 'a2'), 'test3m a1 a1 a2 p1c p2c a1 p3c');
-  test.equal(inst.get('testEscape'), '& < > " \' /');
-  test.done();
+exports.get = {
+    testDefault: function(test) {
+      var inst = int17.create();
+      inst.initSync({ path: './test/fixtures/locales1' });
+      test.equal(inst.get('test1'), 'test1m');
+      test.equal(inst.get('test2'), 'test2m $1 $1 $2');
+      test.equal(inst.get('test2', 'a1', 'a2'), 'test2m a1 a1 a2');
+      test.equal(inst.get('test3'), 'test3m $1 $1 $2 p1c p2c $1 p3c');
+      test.equal(inst.get('test3', 'a1', 'a2'), 'test3m a1 a1 a2 p1c p2c a1 p3c');
+      test.equal(inst.get('testEscape'), '& < > " \' /');
+      test.done();
+    }
+  , testIgnoreCase: function(test) {
+      var inst = int17.create();
+      inst.initSync({ path: './test/fixtures/locales1', ignoreCase: false });
+      test.equal(inst.get('test3'), 'test3m $1 $1 $2 p1c $PLACEHOLDER2$ $placeHOLDER3$');
+      test.equal(inst.get('test3', 'a1', 'a2'),
+        'test3m a1 a1 a2 p1c $PLACEHOLDER2$ $placeHOLDER3$');
+      test.done();
+    }
 };
 
 exports.testLocale = function(test) {
@@ -296,18 +306,17 @@ exports.init = {
     testAsync: function(test) {
       var inst = int17.create()
         , opts = {
-              clean:     true
-            , encoding:  'UTF-8'
-            , extension: '.js'
-            , fallback:  true
-            , fileName:  'msgs'
-            , folders:   true
-            , locale:    ['fr', 'BE']
-            , optimize:  false
-            , path:      './test/fixtures/locales3'
-            , validate:  false
+              clean:      true
+            , encoding:   'UTF-8'
+            , extension:  '.js'
+            , fallback:   true
+            , fileName:   'msgs'
+            , folders:    true
+            , ignoreCase: false
+            , locale:     ['fr', 'BE']
+            , path:       './test/fixtures/locales3'
           };
-      test.expect(12);
+      test.expect(11);
       inst.init(opts, function (err) {
         test.ifError(err);
         test.ok(inst.messenger.messages, 'No messages were loaded');
@@ -318,16 +327,15 @@ exports.init = {
   , testSync: function(test) {
       var inst = int17.create()
         , opts = {
-              clean:     true
-            , encoding:  'UTF-8'
-            , extension: '.js'
-            , fallback:  true
-            , fileName:  'msgs'
-            , folders:   true
-            , locale:    ['fr', 'BE']
-            , optimize:  false
-            , path:      './test/fixtures/locales3'
-            , validate:  false
+              clean:      true
+            , encoding:   'UTF-8'
+            , extension:  '.js'
+            , fallback:   true
+            , fileName:   'msgs'
+            , folders:    true
+            , ignoreCase: false
+            , locale:     ['fr', 'BE']
+            , path:       './test/fixtures/locales3'
           };
       inst.initSync(opts);
       test.ok(inst.messenger.messages, 'No messages were loaded');
@@ -487,4 +495,134 @@ exports.languages = {
       test.deepEqual(inst.languagesSync('en'), [], 'No languages should be retrieved');
       test.done();
     }
+};
+
+exports.testOptimize = function(test) {
+  var contents = fs.readFileSync('./test/fixtures/locales1/en.json', 'utf8')
+    , expected = {
+          dir: {
+            message: 'ltr'
+          }
+        , locale: {
+              message: 'en'
+            , placeholders: {
+                unusedPlaceholder: {
+                  content: 'forever'
+                }
+              }
+          }
+        , test1: {
+            message: 'test1m'
+          }
+        , test2: {
+            message: 'test2m $1 $1 $2'
+          }
+        , test3: {
+              message: 'test3m $1 $1 $2 $placeholder1$ $PLACEHOLDER2$ $placeHOLDER3$'
+            , placeholders: {
+                  placeholder1: {
+                    content: 'p1c'
+                  }
+                , placeholder2: {
+                    content: 'p2c $1'
+                  }
+                , placeholder3: {
+                    content: 'p3c'
+                  }
+              }
+          }
+        , test4: {
+              message: '$prefix$test1$suffix$'
+            , placeholders: {
+                  prefix: {
+                    content: '<span i18n-content="'
+                  }
+                , suffix: {
+                    content: '"></span>'
+                  }
+              }
+          }
+        , testEscape: {
+            message: '& < > " \' /'
+          }
+        , testOpt1: {
+            message: 'option1'
+          }
+        , testOpt2: {
+            message: 'option2'
+          }
+        , testOpt3: {
+            message: 'option3'
+          }
+      };
+  test.deepEqual(int17.optimize(contents), expected,
+    'Serialized messages were incorrectly optimized');
+  test.deepEqual(int17.optimize(JSON.parse(contents)), expected,
+    'Message bundle was incorrectly optimized');
+  test.done();
+};
+
+exports.testParse = function(test) {
+  var contents = fs.readFileSync('./test/fixtures/locales1/en.json', 'utf8')
+    , expected = {
+          dir: {
+              message: 'ltr'
+            , description: 'Text direction'
+          }
+        , locale: {
+              message: 'en'
+            , placeholders: {
+                unusedPlaceholder: {
+                    content: 'forever'
+                  , example: 'alone'
+                }
+              }
+          }
+        , test1: {
+            message: 'test1m'
+          }
+        , test2: {
+            message: 'test2m $1 $1 $2'
+          }
+        , test3: {
+              message: 'test3m $1 $1 $2 $placeholder1$ $PLACEHOLDER2$ $placeHOLDER3$'
+            , placeholders: {
+                  placeholder1: {
+                      content: 'p1c'
+                    , example: 'meta meta'
+                  }
+                , placeholder2: {
+                    content: 'p2c $1'
+                  }
+                , placeholder3: {
+                    content: 'p3c'
+                  }
+              }
+          }
+        , test4: {
+              message: '$prefix$test1$suffix$'
+            , placeholders: {
+                  prefix: {
+                    content: '<span i18n-content="'
+                  }
+                , suffix: {
+                    content: '"></span>'
+                  }
+              }
+          }
+        , testEscape: {
+            message: '& < > " \' /'
+          }
+        , testOpt1: {
+            message: 'option1'
+          }
+        , testOpt2: {
+            message: 'option2'
+          }
+        , testOpt3: {
+            message: 'option3'
+          }
+      };
+  test.deepEqual(int17.parse(contents), expected, 'Messages were incorrectly parsed');
+  test.done();
 };
