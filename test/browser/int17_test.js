@@ -318,7 +318,7 @@ test('property', function (test) {
   reset();
   inst.property('#int17 .test3 .e3', 'innerHTML', 'test4');
   helpers.htmlEqual(test, '.test3 .e3',
-    '<a class="e3"><span int17-content="test1">test1m</span></a>');
+    '<a class="e3"><span i18n-content="test1">test1m</span></a>');
   reset();
   inst.property('#int17 .test3 .e3', 'style.direction', 'dir');
   var elements = slice.call(document.querySelectorAll('#int17 .test3 .e3'));
@@ -333,16 +333,16 @@ test('traverse', function (test) {
     , reset = helpers.resetter('.test1');
   inst.initSync({ locale: 'en', path: '../fixtures/locales1' });
   inst.traverse('#int17 .test1');
-  helpers.htmlEqual(test, '.test1 .e1', '<a class="e1" int17-content="test1">test1m</a>');
-  helpers.htmlEqual(test, '.test1 .e2', '<a class="e2" data-int17-content="test2">' +
+  helpers.htmlEqual(test, '.test1 .e1', '<a class="e1" i18n-content="test1">test1m</a>');
+  helpers.htmlEqual(test, '.test1 .e2', '<a class="e2" data-i18n-content="test2">' +
     'test2m $1 $1 $2</a>');
-  helpers.htmlEqual(test, '.test1 .e3', '<a class="e3" int17-subs="a1;a2" int17-content="test2">' +
+  helpers.htmlEqual(test, '.test1 .e3', '<a class="e3" i18n-subs="a1;a2" i18n-content="test2">' +
     'test2m a1 a1 a2</a>');
-  helpers.htmlEqual(test, '.test1 .e4', '<a class="e4" data-int17-subs="a1;a2" ' +
-    'int17-values="title:test2;.style.direction:dir;.innerHTML:test4" title="test2m a1 a1 a2" ' +
-    'style="direction: ltr; "><span int17-content="test1">test1m</span></a>');
+  helpers.htmlEqual(test, '.test1 .e4', '<a class="e4" data-i18n-subs="a1;a2" ' +
+    'i18n-values="title:test2;.style.direction:dir;.innerHTML:test4" title="test2m a1 a1 a2" ' +
+    'style="direction: ltr; "><span i18n-content="test1">test1m</span></a>');
   helpers.htmlEqual(test, '.test1 .e5', '<select class="e5" ' +
-    'int17-options="testOpt1:-1;testOpt2;testOpt3"><option value="-1">option1</option>' +
+    'i18n-options="testOpt1:-1;testOpt2;testOpt3"><option value="-1">option1</option>' +
     '<option>option2</option><option>option3</option></select>');
   reset();
 });
@@ -358,6 +358,25 @@ test('traverse:clean', function (test) {
   helpers.htmlEqual(test, '.test2 .e4', '<a class="e4" title="test2m a1 a1 a2" ' +
     'style="direction: ltr; "><span>test1m</span></a>');
   helpers.htmlEqual(test, '.test2 .e5', '<select class="e5"><option value="-1">option1</option>' +
+    '<option>option2</option><option>option3</option></select>');
+  reset();
+});
+
+test('traverse:support', function (test) {
+  var inst  = int17.create()
+    , reset = helpers.resetter('.test4');
+  inst.initSync({ locale: 'en', path: '../fixtures/locales1' });
+  inst.traverse('#int17 .test4');
+  helpers.htmlEqual(test, '.test4 .e1', '<a class="e1" int17-content="test1">test1m</a>');
+  helpers.htmlEqual(test, '.test4 .e2', '<a class="e2" data-int17-content="test2">' +
+    'test2m $1 $1 $2</a>');
+  helpers.htmlEqual(test, '.test4 .e3', '<a class="e3" int17-subs="a1;a2" int17-content="test2">' +
+    'test2m a1 a1 a2</a>');
+  helpers.htmlEqual(test, '.test4 .e4', '<a class="e4" data-int17-subs="a1;a2" ' +
+    'int17-values="title:test2;.style.direction:dir;.innerHTML:test4" title="test2m a1 a1 a2" ' +
+    'style="direction: ltr; "><span i18n-content="test1">test1m</span></a>');
+  helpers.htmlEqual(test, '.test4 .e5', '<select class="e5" ' +
+    'int17-options="testOpt1:-1;testOpt2;testOpt3"><option value="-1">option1</option>' +
     '<option>option2</option><option>option3</option></select>');
   reset();
 });
