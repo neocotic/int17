@@ -18,6 +18,7 @@ It can be used normally in any browser as well as in the [node.js][] environment
 * [API](#api)
    * [Int17](#int17)
      * [Instances](#instances)
+     * [Message Bundles](#message-bundles)
      * [Miscellaneous](#miscellaneous)
    * [Internationalization](#internationalization)
      * [Setup](#setup)
@@ -158,6 +159,57 @@ console.log(i18n1 == i18n3); // "false"
 console.log(i18n3 == i18n4); // "true"
 ```
 
+#### Message Bundles
+
+##### `optimize(messages)`
+Removes all meta data (i.e. message descriptions and placeholder examples) from the specified
+`messages`, which can either be message bundle (Object) or resource contents (String).
+
+This can be really useful for build systems trying to optimize/minify message bundle resources to
+improve load times and/or reduce bandwidth in their production environments.
+
+``` javascript
+var messages = {
+  greet: {
+    message: 'Welcome, $name$',
+    description: 'Greeting message for logged in users',
+    placeholders: {
+      name: {
+        content: '$1',
+        example: 'Alasdair'
+      }
+    }
+  }
+};
+console.log(int17.optimize(messages));
+/*
+{
+  greet: {
+    message: 'Welcome, $name$',
+    placeholders: {
+      name: {
+        content: '$1'
+      }
+    }
+  }
+}
+*/
+```
+
+##### `parse(contents)`
+Builds a message bundle from the specified resource `contents`.
+
+``` javascript
+console.log(int17.parse(fs.readFile('./path/to/file', 'utf8')));
+/*
+{
+  greet: {
+    message: 'Welcome, $1'
+  }
+}
+*/
+```
+
 #### Miscellaneous
 
 ##### `noConflict()`
@@ -270,6 +322,15 @@ The following options are recognised by these methods (all of which are optional
     <td><code>false</code></td>
   </tr>
   <tr>
+    <td>ignoreCase</td>
+    <td>
+      Ignore the case of placeholders when looking up their contents to be substituted. Disabling
+      this will improve performance but means that the case of placeholders in messages must
+      exactly match.
+    </td>
+    <td><code>true</code></td>
+  </tr>
+  <tr>
     <td>languages</td>
     <td>
       Specify a pre-defined list of available languages.
@@ -290,19 +351,6 @@ The following options are recognised by these methods (all of which are optional
     <td><em>Derived</em></td>
   </tr>
   <tr>
-    <td>optimize</td>
-    <td>
-      Optimize the memory usage and improve lookup performance slightly with a small increase in
-      initialization time.
-      <br>
-      As optimization involves iterating over all messages within the locale file this may impact
-      performance when used in production but, if you're already using the <em>validate</em>
-      option, this won't increase the delay to initialization much as it already invokes the
-      iteration.
-    </td>
-    <td><code>true</code></td>
-  </tr>
-  <tr>
     <td>path</td>
     <td>
       Absolute/relative file path pointing at the root directory containing the locale
@@ -321,19 +369,6 @@ The following options are recognised by these methods (all of which are optional
       <a href="http://nodejs.org">node.js</a>:
       <a href="http://nodejs.org/api/path.html#path_path_sep">path.sep</a>
     </td>
-  </tr>
-  <tr>
-    <td>validate</td>
-    <td>
-      Check the contents of the locale file once loaded to ensure all messages are entirely valid,
-      throwing an appropriate error if any messages are found to be invalid.
-      <br>
-      As validation involves iterating over all messages within the locale file this may impact
-      performance when used in production but, if you're already using the <em>optimize</em>
-      option, this won't increase the delay to initialization much as it already invokes the
-      iteration.
-    </td>
-    <td><code>true</code></td>
   </tr>
 </table>
 

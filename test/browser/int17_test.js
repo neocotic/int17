@@ -48,19 +48,18 @@ test('create', function (test) {
   test.notStrictEqual(int17.create('foo'), instances[1], 'Cache was not cleared');
 });
 
-asyncTest('init:async', 12, function (test) {
+asyncTest('init:async', 11, function (test) {
   var inst = int17.create()
     , opts = {
-          clean:     true
-        , encoding:  'UTF-8'
-        , extension: '.js'
-        , fallback:  false
-        , fileName:  'msgs'
-        , folders:   true
-        , locale:    ['fr', 'BE']
-        , optimize:  false
-        , path:      '../fixtures/locales3'
-        , validate:  false
+          clean:      true
+        , encoding:   'UTF-8'
+        , extension:  '.js'
+        , fallback:   false
+        , fileName:   'msgs'
+        , folders:    true
+        , ignoreCase: false
+        , locale:     ['fr', 'BE']
+        , path:       '../fixtures/locales3'
       };
   inst.init(opts, function (err) {
     test.ok(!err, 'Error was thrown');
@@ -73,16 +72,15 @@ asyncTest('init:async', 12, function (test) {
 test('init:sync', function (test) {
   var inst = int17.create()
     , opts = {
-          clean:     true
-        , encoding:  'UTF-8'
-        , extension: '.js'
-        , fallback:  false
-        , fileName:  'msgs'
-        , folders:   true
-        , locale:    ['fr', 'BE']
-        , optimize:  false
-        , path:      '../fixtures/locales3'
-        , validate:  false
+          clean:      true
+        , encoding:   'UTF-8'
+        , extension:  '.js'
+        , fallback:   false
+        , fileName:   'msgs'
+        , folders:    true
+        , ignoreCase: false
+        , locale:     ['fr', 'BE']
+        , path:       '../fixtures/locales3'
       };
   inst.initSync(opts);
   test.ok(inst.messenger.messages, 'No messages were loaded');
