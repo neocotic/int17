@@ -29,7 +29,7 @@
     "message": "$prefix$test1$suffix$",
     "placeholders": {
       "prefix": {
-        "content": "<span int17-content=\""
+        "content": "<span i18n-content=\""
       },
       "suffix": {
         "content": "\"></span>"
