@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>jQuery Plugin Test Suite</title>
+  <link rel="stylesheet" href="vendor/qunit.css" media="screen">
+  <script src="vendor/qunit.js"></script>
+  <script src="vendor/jquery.min.js"></script>
+  <script src="../../lib/int17.js"></script>
+  <script src="../../lib/jquery.int17.js"></script>
+  <script src="../helpers.js"></script>
+  <script src="jquery_test.js"></script>
+</head>
+<body>
+  <h1 id="qunit-header">jQuery Plugin Test Suite</h1>
+  <h2 id="qunit-banner"></h2>
+  <div id="qunit-testrunner-toolbar"></div>
+  <h2 id="qunit-userAgent"></h2>
+  <ol id="qunit-tests"></ol>
+  <div id="qunit-fixture"></div>
+  <div id="int17" style="display: none">
+    <div class="test1">
+      <a class="e1" i18n-content="test1"></a>
+      <a class="e2" data-i18n-content="test2"></a>
+      <a class="e3" i18n-subs="a1;a2" i18n-content="test2"></a>
+      <a class="e4" data-i18n-subs="a1;a2" i18n-values="title:test2;.style.direction:dir;.innerHTML:test4"></a>
+      <select class="e5" i18n-options="testOpt1:-1;testOpt2;testOpt3"></select>
+    </div>
+    <div class="test2">
+      <a class="e1" data-i18n-content="test1"></a>
+      <a class="e2" i18n-content="test2"></a>
+      <a class="e3" data-i18n-subs="a1;a2" data-i18n-content="test2"></a>
+      <a class="e4" i18n-subs="a1;a2" data-i18n-values="title:test2;.style.direction:dir;.innerHTML:test4"></a>
+      <select class="e5" data-i18n-options="testOpt1:-1;testOpt2;testOpt3"></select>
+    </div>
+  </div>
+</body>
+</html>

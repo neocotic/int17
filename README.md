@@ -28,6 +28,7 @@ It can be used normally in any browser as well as in the [node.js][] environment
      * [Miscellaneous](#miscellaneous-1)
 * [Locale Files](#locale-files)
 * [Attributes](#attributes)
+* [jQuery](#jquery)
 * [Express](#express)
 * [Bugs](#bugs)
 * [Questions](#questions)
@@ -692,6 +693,27 @@ The attribute value contains semi-colon separated values.
 <p i18n-subs="World" i18n-content="welcome"></p>
 ```
 
+## jQuery
+
+Due to the huge popularity of [jQuery][] it deserves our full support, especially it can really
+simplify common usage. Take the JavaScript in the original browser example:
+
+``` javascript
+$.int17({ locale: 'en-GB' }).done(function () {
+  $(document).int17();
+});
+```
+
+As you may have noticed, we're using [jQuery.Deferred][] here, but you can also use simple callback
+functions as well. For convenience, the [Internationalization](#internationalization) instance that
+is created by the call to `$.int17` is passed as an argument to whatever callback mechanism is
+used.
+
+`$.int17` accepts the same [options](#options) as the core initialization methods, but it also
+supports an additional `int17` option which, when specified, will result in the plugin reusing that
+instance. However, you must ensure that the value of `int17` is initialized before calling
+`$.fn.int17`.
+
 ## Express
 
 If you love [Express][] as much as I do, you'll be happy to know that you don't have to do any
@@ -762,5 +784,7 @@ http://neocotic.com/int17
 [express]: http://expressjs.com
 [int17]: http://neocotic.com/int17
 [internationalization and localization]: http://en.wikipedia.org/wiki/Internationalization_and_localization
+[jquery]: http://jquery.com
+[jquery.deferred]: http://api.jquery.com/category/deferred-object/
 [json]: http://www.json.org
 [node.js]: http://nodejs.org

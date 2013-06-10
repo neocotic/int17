@@ -35,7 +35,10 @@ module.exports = function(grunt) {
     , qunit:    {
         all: {
           options: {
-            urls: ['http://localhost:3000/test/browser/int17.html']
+            urls: [
+                'http://localhost:3000/test/browser/int17.html'
+              , 'http://localhost:3000/test/browser/jquery.html'
+            ]
           }
         }
       }
