@@ -12,9 +12,10 @@
   // it may also contain more.
   Helpers.prototype.contains = function(test, actual, expected, message, strict) {
     message = message ? message + ': ' : '';
-    var prop
-      , equalMethod = strict ? 'strictEqual' : 'equal';
-    for (prop in expected) {
+
+    var equalMethod = strict ? 'strictEqual' : 'equal';
+
+    for (var prop in expected) {
       if (!expected.hasOwnProperty(prop)) continue;
       test[equalMethod](actual[prop], expected[prop], message + 'property[' + prop +
         '] was not as expected');
@@ -31,18 +32,19 @@
   // indices.
   Helpers.prototype.equalOnly = function(test, index, expected, array, message, strict) {
     message = message ? message + ': ' : '';
-    var isExpected
-      , equalMethod    = strict ? 'strictEqual' : 'equal'
+
+    var equalMethod    = strict ? 'strictEqual' : 'equal'
       , notEqualMethod = strict ? 'notStrictEqual' : 'notEqual';
+
     array.forEach(function (value, i) {
-      isExpected = index === i;
+      var isExpected = index === i;
+
       if (!isExpected) {
-        expected.forEach(function (value, j) {
-          if (value === i) {
-            isExpected = true;
-          }
+        expected.forEach(function (value) {
+          if (value === i) isExpected = true;
         });
       }
+
       if (isExpected) {
         test[equalMethod](value, array[index], message + 'item[' + i + '] should equal item[' +
           index + ']');
@@ -65,10 +67,12 @@
   Helpers.prototype.htmlEqual = function(test, selector, expected, message) {
     selector = '#int17 ' + (selector || '');
     message  = message ? message + ': ' : '';
+
     var elements = slice.call(document.querySelectorAll(selector));
     elements.forEach(function (element, index) {
       var div = document.createElement('div');
       div.appendChild(element.cloneNode(true));
+
       test.equal(div.innerHTML, expected, message + 'element[' + index +
         ']\'s HTML not as expected');
     });
@@ -78,11 +82,13 @@
   // when **this function** was first called.
   Helpers.prototype.resetter = function(selector) {
     selector = '#int17 ' + (selector || '');
-    var elements = slice.call(document.querySelectorAll(selector))
-      , html     = [];
+
+    var html     = []
+      , elements = slice.call(document.querySelectorAll(selector));
     elements.forEach(function (element, index) {
       html.push(element.innerHTML);
     });
+
     return function () {
       elements.forEach(function (element, index) {
         element.innerHTML = html[index];
