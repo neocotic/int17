@@ -281,6 +281,11 @@ The following options are recognised by these methods (all of which are optional
     <td><code>false</code></td>
   </tr>
   <tr>
+    <td>defaultLocale</td>
+    <td>Default locale to be used if one is not specified or could not be derived.</td>
+    <td><code>'en'</code></td>
+  </tr>
+  <tr>
     <td>encoding</td>
     <td>Encoding to be used when reading locale files.</td>
     <td><code>'UTF-8'</code></td>
@@ -332,6 +337,16 @@ The following options are recognised by these methods (all of which are optional
     <td><code>true</code></td>
   </tr>
   <tr>
+    <td>messages</td>
+    <td>
+      Specify a pre-defined message bundle.
+      <br>
+      If a non-empty bundle is provided, no additional messages are loaded during initialization.
+      This can be useful if you want to pre-render your message bundles on the page.
+    </td>
+    <td><code>{}</code></td>
+  </tr>
+  <tr>
     <td>languages</td>
     <td>
       Specify a pre-defined list of available languages.
@@ -347,7 +362,7 @@ The following options are recognised by these methods (all of which are optional
       Specify the locale whose messages are to be retrieved.
       <br>
       By default, <code>int17</code> attempts to derive the best locale based on your environment
-      before falling back on <code>'en'</code>.
+      before falling back to the <em>defaultLocale</em> option.
     </td>
     <td><em>Derived</em></td>
   </tr>
