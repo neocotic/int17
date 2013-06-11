@@ -18,6 +18,7 @@ It can be used normally in any browser as well as in the [node.js][] environment
 * [API](#api)
    * [Int17](#int17)
      * [Instances](#instances)
+     * [Message Bundles](#message-bundles)
      * [Miscellaneous](#miscellaneous)
    * [Internationalization](#internationalization)
      * [Setup](#setup)
@@ -27,6 +28,7 @@ It can be used normally in any browser as well as in the [node.js][] environment
      * [Miscellaneous](#miscellaneous-1)
 * [Locale Files](#locale-files)
 * [Attributes](#attributes)
+* [jQuery](#jquery)
 * [Express](#express)
 * [Bugs](#bugs)
 * [Questions](#questions)
@@ -61,11 +63,11 @@ In the browser:
     </script>
   </head>
   <body>
-    <h1 int17-subs="2013" int17-content="date_header"></h1>
+    <h1 i18n-subs="2013" i18n-content="date_header"></h1>
     <div>
-      <p int17-values=".style.direction:dir;.innerHTML:main_body"></p>
-      <span int17-content="my_label"></span>
-      <select int17-options="default_option:-1;option1;option2"></select>
+      <p i18n-values=".style.direction:dir;.innerHTML:main_body"></p>
+      <span i18n-content="my_label"></span>
+      <select i18n-options="default_option:-1;option1;option2"></select>
     </div>
   </body>
 </html>
@@ -158,6 +160,57 @@ console.log(i18n1 == i18n3); // "false"
 console.log(i18n3 == i18n4); // "true"
 ```
 
+#### Message Bundles
+
+##### `optimize(messages)`
+Removes all meta data (i.e. message descriptions and placeholder examples) from the specified
+`messages`, which can either be message bundle (Object) or resource contents (String).
+
+This can be really useful for build systems trying to optimize/minify message bundle resources to
+improve load times and/or reduce bandwidth in their production environments.
+
+``` javascript
+var messages = {
+  greet: {
+    message: 'Welcome, $name$',
+    description: 'Greeting message for logged in users',
+    placeholders: {
+      name: {
+        content: '$1',
+        example: 'Alasdair'
+      }
+    }
+  }
+};
+console.log(int17.optimize(messages));
+/*
+{
+  greet: {
+    message: 'Welcome, $name$',
+    placeholders: {
+      name: {
+        content: '$1'
+      }
+    }
+  }
+}
+*/
+```
+
+##### `parse(contents)`
+Builds a message bundle from the specified resource `contents`.
+
+``` javascript
+console.log(int17.parse(fs.readFile('./path/to/file', 'utf8')));
+/*
+{
+  greet: {
+    message: 'Welcome, $1'
+  }
+}
+*/
+```
+
 #### Miscellaneous
 
 ##### `noConflict()`
@@ -181,7 +234,7 @@ This is really just intended for use within a browser.
 The current version of `int17`.
 
 ``` javascript
-console.log(int17.version); // "0.2.2"
+console.log(int17.version); // "0.3.0"
 ```
 
 ### Internationalization
@@ -228,6 +281,11 @@ The following options are recognised by these methods (all of which are optional
     <td><code>false</code></td>
   </tr>
   <tr>
+    <td>defaultLocale</td>
+    <td>Default locale to be used if one is not specified or could not be derived.</td>
+    <td><code>'en'</code></td>
+  </tr>
+  <tr>
     <td>encoding</td>
     <td>Encoding to be used when reading locale files.</td>
     <td><code>'UTF-8'</code></td>
@@ -270,6 +328,25 @@ The following options are recognised by these methods (all of which are optional
     <td><code>false</code></td>
   </tr>
   <tr>
+    <td>ignoreCase</td>
+    <td>
+      Ignore the case of placeholders when looking up their contents to be substituted. Disabling
+      this will improve performance but means that the case of placeholders in messages must
+      exactly match.
+    </td>
+    <td><code>true</code></td>
+  </tr>
+  <tr>
+    <td>messages</td>
+    <td>
+      Specify a pre-defined message bundle.
+      <br>
+      If a non-empty bundle is provided, no additional messages are loaded during initialization.
+      This can be useful if you want to pre-render your message bundles on the page.
+    </td>
+    <td><code>{}</code></td>
+  </tr>
+  <tr>
     <td>languages</td>
     <td>
       Specify a pre-defined list of available languages.
@@ -285,22 +362,9 @@ The following options are recognised by these methods (all of which are optional
       Specify the locale whose messages are to be retrieved.
       <br>
       By default, <code>int17</code> attempts to derive the best locale based on your environment
-      before falling back on <code>'en'</code>.
+      before falling back to the <em>defaultLocale</em> option.
     </td>
     <td><em>Derived</em></td>
-  </tr>
-  <tr>
-    <td>optimize</td>
-    <td>
-      Optimize the memory usage and improve lookup performance slightly with a small increase in
-      initialization time.
-      <br>
-      As optimization involves iterating over all messages within the locale file this may impact
-      performance when used in production but, if you're already using the <em>validate</em>
-      option, this won't increase the delay to initialization much as it already invokes the
-      iteration.
-    </td>
-    <td><code>true</code></td>
   </tr>
   <tr>
     <td>path</td>
@@ -321,19 +385,6 @@ The following options are recognised by these methods (all of which are optional
       <a href="http://nodejs.org">node.js</a>:
       <a href="http://nodejs.org/api/path.html#path_path_sep">path.sep</a>
     </td>
-  </tr>
-  <tr>
-    <td>validate</td>
-    <td>
-      Check the contents of the locale file once loaded to ensure all messages are entirely valid,
-      throwing an appropriate error if any messages are found to be invalid.
-      <br>
-      As validation involves iterating over all messages within the locale file this may impact
-      performance when used in production but, if you're already using the <em>optimize</em>
-      option, this won't increase the delay to initialization much as it already invokes the
-      iteration.
-    </td>
-    <td><code>true</code></td>
   </tr>
 </table>
 
@@ -611,26 +662,29 @@ The [traverse([element])](#traverseelement) method automatically recognizes int1
 attributes and handles each element they're attached to accordingly.
 
 Altenatively, you can use HTML5 data attribute names if you want your pages to contain only
-strictly valid HTML5 (e.g. `data-int17-content`).
+strictly valid HTML5 (e.g. `data-i18n-content`).
 
-##### `int17-content`
+*Note: Attributes using the `int17` prefix have been deprecrated as of v0.3.0 in favour of the more
+generic `i18n` prefix and will be removed completely in a future release*
+
+##### `i18n-content`
 Replaces the HTML contents of the element with message for the attribute's value.
 
 ``` html
-<h1 int17-content="page_header"></h1>
+<h1 i18n-content="page_header"></h1>
 ```
 
-##### `int17-options`
+##### `i18n-options`
 Creates option elements containg the message for each name in the attribute's value.
 
 The attribute value contains semi-colon separated names which can themselves be separated by
 colons to specify values.
 
 ``` html
-<select int17-options="default_value:-1;option1;option2;option3"></select>
+<select i18n-options="default_value:-1;option1;option2;option3"></select>
 ```
 
-##### `int17-values`
+##### `i18n-values`
 Sets the attribute/property values to their corresponding messages as definied in the attribute's
 value.
 
@@ -641,18 +695,39 @@ element are *traversed* once being processed to ensure any newly inserted [attri
 are processed.
 
 ``` html
-<p int17-values=".innerHTML:page_content;.style.direction:dir;title:main_title"></p>
+<p i18n-values=".innerHTML:page_content;.style.direction:dir;title:main_title"></p>
 ```
 
-##### `int17-subs`
+##### `i18n-subs`
 Specifies replacements for indexed placeholders within the messages looked up while processing
 the other attributes.
 
 The attribute value contains semi-colon separated values.
 
 ``` html
-<p int17-subs="World" int17-content="welcome"></p>
+<p i18n-subs="World" i18n-content="welcome"></p>
 ```
+
+## jQuery
+
+Due to the huge popularity of [jQuery][] it deserves our full support, especially it can really
+simplify common usage. Take the JavaScript in the original browser example:
+
+``` javascript
+$.int17({ locale: 'en-GB' }).done(function () {
+  $(document).int17();
+});
+```
+
+As you may have noticed, we're using [jQuery.Deferred][] here, but you can also use simple callback
+functions as well. For convenience, the [Internationalization](#internationalization) instance that
+is created by the call to `$.int17` is passed as an argument to whatever callback mechanism is
+used.
+
+`$.int17` accepts the same [options](#options) as the core initialization methods, but it also
+supports an additional `int17` option which, when specified, will result in the plugin reusing that
+instance. However, you must ensure that the value of `int17` is initialized before calling
+`$.fn.int17`.
 
 ## Express
 
@@ -724,5 +799,7 @@ http://neocotic.com/int17
 [express]: http://expressjs.com
 [int17]: http://neocotic.com/int17
 [internationalization and localization]: http://en.wikipedia.org/wiki/Internationalization_and_localization
+[jquery]: http://jquery.com
+[jquery.deferred]: http://api.jquery.com/category/deferred-object/
 [json]: http://www.json.org
 [node.js]: http://nodejs.org

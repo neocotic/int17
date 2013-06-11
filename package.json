@@ -1,7 +1,7 @@
 {
   "name": "int17",
   "description": "Internationalization JavaScript library",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "homepage": "http://neocotic.com/int17",
   "bugs": {
     "url": "https://github.com/neocotic/int17/issues"
@@ -33,11 +33,11 @@
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-connect": "~0.3.0",
-    "grunt-contrib-jshint": "~0.5.4",
-    "grunt-contrib-nodeunit": "~0.1.2",
-    "grunt-contrib-qunit": "~0.2.1",
-    "grunt-contrib-uglify": "~0.2.1",
-    "grunt-contrib-watch": "~0.4.3",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-qunit": "~0.2.2",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-watch": "~0.4.4",
     "grunt-docco": "~0.2.0"
   },
   "scripts": {
