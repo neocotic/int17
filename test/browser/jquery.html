@@ -2,15 +2,17 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Basic Test Suite</title>
+  <title>jQuery Plugin Test Suite</title>
   <link rel="stylesheet" href="vendor/qunit.css" media="screen">
   <script src="vendor/qunit.js"></script>
+  <script src="vendor/jquery.min.js"></script>
   <script src="../../lib/int17.js"></script>
+  <script src="../../lib/jquery.int17.js"></script>
   <script src="../helpers.js"></script>
-  <script src="int17_test.js"></script>
+  <script src="jquery_test.js"></script>
 </head>
 <body>
-  <h1 id="qunit-header">Basic Test Suite</h1>
+  <h1 id="qunit-header">jQuery Plugin Test Suite</h1>
   <h2 id="qunit-banner"></h2>
   <div id="qunit-testrunner-toolbar"></div>
   <h2 id="qunit-userAgent"></h2>
@@ -30,25 +32,6 @@
       <a class="e3" data-i18n-subs="a1;a2" data-i18n-content="test2"></a>
       <a class="e4" i18n-subs="a1;a2" data-i18n-values="title:test2;.style.direction:dir;.innerHTML:test4"></a>
       <select class="e5" data-i18n-options="testOpt1:-1;testOpt2;testOpt3"></select>
-    </div>
-    <div class="test3">
-      <a class="e1"></a>
-      <a class="e1"></a>
-      <a class="e2"></a>
-      <a class="e2" title="originalTitle"></a>
-      <a class="e3"></a>
-      <a class="e3"></a>
-      <select class="e4"></select>
-      <select class="e4"></select>
-      <select class="e5"></select>
-      <select class="e6"></select>
-    </div>
-    <div class="test4">
-      <a class="e1" int17-content="test1"></a>
-      <a class="e2" data-int17-content="test2"></a>
-      <a class="e3" int17-subs="a1;a2" int17-content="test2"></a>
-      <a class="e4" data-int17-subs="a1;a2" int17-values="title:test2;.style.direction:dir;.innerHTML:test4"></a>
-      <select class="e5" int17-options="testOpt1:-1;testOpt2;testOpt3"></select>
     </div>
   </div>
 </body>

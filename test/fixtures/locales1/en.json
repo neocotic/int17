@@ -1,9 +1,16 @@
 {
   "dir": {
-    "message": "ltr"
+      "message": "ltr",
+      "description": "Text direction"
   },
   "locale": {
-    "message": "en"
+    "message": "en",
+    "placeholders": {
+      "unusedPlaceholder": {
+        "content": "forever",
+        "example": "alone"
+      }
+    }
   },
   "test1": {
     "message": "test1m"
@@ -15,7 +22,8 @@
     "message": "test3m $1 $1 $2 $placeholder1$ $PLACEHOLDER2$ $placeHOLDER3$",
     "placeholders": {
       "placeholder1": {
-        "content": "p1c"
+        "content": "p1c",
+        "example": "meta meta"
       },
       "placeholder2": {
         "content": "p2c $1"
@@ -29,7 +37,7 @@
     "message": "$prefix$test1$suffix$",
     "placeholders": {
       "prefix": {
-        "content": "<span int17-content=\""
+        "content": "<span i18n-content=\""
       },
       "suffix": {
         "content": "\"></span>"
