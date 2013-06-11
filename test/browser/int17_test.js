@@ -69,6 +69,20 @@ asyncTest('init:async', 11, function (test) {
   });
 });
 
+asyncTest('init:async:manual', 2, function (test) {
+  var inst = int17.create()
+    , msgs = {
+          foo: { message: 'bar' }
+        , fu:  { message: 'baz' }
+      }
+    , opts = { messages: msgs };
+  inst.init(opts, function (err) {
+    test.ok(!err, 'Error was thrown');
+    test.strictEqual(inst.messenger.messages, msgs, 'Wrong messages were used');
+    start();
+  });
+});
+
 test('init:sync', function (test) {
   var inst = int17.create()
     , opts = {
@@ -85,6 +99,17 @@ test('init:sync', function (test) {
   inst.initSync(opts);
   test.ok(inst.messenger.messages, 'No messages were loaded');
   helpers.strictContains(test, inst.messenger, opts, 'Options were not set correctly');
+});
+
+test('init:sync:manual', function (test) {
+  var inst = int17.create()
+    , msgs = {
+          foo: { message: 'bar' }
+        , fu:  { message: 'baz' }
+      }
+    , opts = { messages: msgs };
+  inst.initSync(opts);
+  test.strictEqual(inst.messenger.messages, msgs, 'Wrong messages were used');
 });
 
 asyncTest('languages:async', 3, function (test) {
