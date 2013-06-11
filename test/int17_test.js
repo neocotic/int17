@@ -324,6 +324,20 @@ exports.init = {
         test.done();
       });
     }
+  , testAsyncManual: function(test) {
+      var inst = int17.create()
+        , msgs = {
+              foo: { message: 'bar' }
+            , fu:  { message: 'baz' }
+          }
+        , opts = { messages: msgs };
+      test.expect(2);
+      inst.init(opts, function (err) {
+        test.ifError(err);
+        test.strictEqual(inst.messenger.messages, msgs, 'Wrong messages were used');
+        test.done();
+      });
+    }
   , testSync: function(test) {
       var inst = int17.create()
         , opts = {
@@ -340,6 +354,17 @@ exports.init = {
       inst.initSync(opts);
       test.ok(inst.messenger.messages, 'No messages were loaded');
       helpers.strictContains(test, inst.messenger, opts, 'Options were not set correctly');
+      test.done();
+    }
+  , testSyncManual: function(test) {
+      var inst = int17.create()
+        , msgs = {
+              foo: { message: 'bar' }
+            , fu:  { message: 'baz' }
+          }
+        , opts = { messages: msgs };
+      inst.initSync(opts);
+      test.strictEqual(inst.messenger.messages, msgs, 'Wrong messages were used');
       test.done();
     }
 };
