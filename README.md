@@ -234,7 +234,7 @@ This is really just intended for use within a browser.
 The current version of `int17`.
 
 ``` javascript
-console.log(int17.version); // "0.3.0"
+console.log(int17.version); // "0.4.0"
 ```
 
 ### Internationalization
