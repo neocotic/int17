@@ -661,11 +661,11 @@ format while adhering to the following structure:
 The [traverse([element])](#traverseelement) method automatically recognizes int17-specific HTML
 attributes and handles each element they're attached to accordingly.
 
-Altenatively, you can use HTML5 data attribute names if you want your pages to contain only
+Alternatively, you can use HTML5 data attribute names if you want your pages to contain only
 strictly valid HTML5 (e.g. `data-i18n-content`).
 
-*Note: Attributes using the `int17` prefix have been deprecrated as of v0.3.0 in favour of the more
-generic `i18n` prefix and will be removed completely in a future release*
+**Note:** Attributes using the `int17` prefix have been deprecrated as of v0.3.0 in favour of the
+more generic `i18n` prefix and will be removed completely in a future release.
 
 ##### `i18n-content`
 Replaces the HTML contents of the element with message for the attribute's value.
