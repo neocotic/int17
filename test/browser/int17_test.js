@@ -79,8 +79,8 @@ asyncTest('init:async', 11, function (test) {
 
   inst.init(opts, function (err) {
     test.ok(!err, 'Error was thrown');
-    test.ok(inst.messenger.messages, 'No messages were loaded');
-    helpers.strictContains(test, inst.messenger, opts, 'Options were not set correctly');
+    test.ok(inst.config.messages, 'No messages were loaded');
+    helpers.strictContains(test, inst.config, opts, 'Options were not set correctly');
 
     start();
   });
@@ -96,7 +96,7 @@ asyncTest('init:async:manual', 2, function (test) {
 
   inst.init(opts, function (err) {
     test.ok(!err, 'Error was thrown');
-    test.strictEqual(inst.messenger.messages, msgs, 'Wrong messages were used');
+    test.strictEqual(inst.config.messages, msgs, 'Wrong messages were used');
 
     start();
   });
@@ -118,8 +118,8 @@ test('init:sync', function (test) {
 
   inst.initSync(opts);
 
-  test.ok(inst.messenger.messages, 'No messages were loaded');
-  helpers.strictContains(test, inst.messenger, opts, 'Options were not set correctly');
+  test.ok(inst.config.messages, 'No messages were loaded');
+  helpers.strictContains(test, inst.config, opts, 'Options were not set correctly');
 });
 
 test('init:sync:manual', function (test) {
@@ -132,7 +132,7 @@ test('init:sync:manual', function (test) {
 
   inst.initSync(opts);
 
-  test.strictEqual(inst.messenger.messages, msgs, 'Wrong messages were used');
+  test.strictEqual(inst.config.messages, msgs, 'Wrong messages were used');
 });
 
 asyncTest('languages:async', 3, function (test) {

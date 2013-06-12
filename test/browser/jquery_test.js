@@ -16,8 +16,8 @@ asyncTest('jQuery:callback', 12, function (test) {
   $.int17(opts, function (err, inst) {
     test.ok(!err, 'Error was thrown');
     test.ok(inst, 'Instance was not created');
-    test.ok(inst.messenger.messages, 'No messages were loaded');
-    helpers.strictContains(test, inst.messenger, opts, 'Options were not set correctly');
+    test.ok(inst.config.messages, 'No messages were loaded');
+    helpers.strictContains(test, inst.config, opts, 'Options were not set correctly');
 
     start();
   });
@@ -76,8 +76,8 @@ asyncTest('jQuery:deferred', 11, function (test) {
 
   $.int17(opts).done(function (inst) {
     test.ok(inst, 'Instance was not created');
-    test.ok(inst.messenger.messages, 'No messages were loaded');
-    helpers.strictContains(test, inst.messenger, opts, 'Options were not set correctly');
+    test.ok(inst.config.messages, 'No messages were loaded');
+    helpers.strictContains(test, inst.config, opts, 'Options were not set correctly');
 
     start();
   });
